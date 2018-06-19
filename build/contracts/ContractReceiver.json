@@ -1,0 +1,338 @@
+{
+  "contractName": "ContractReceiver",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        },
+        {
+          "name": "_data",
+          "type": "bytes"
+        }
+      ],
+      "name": "tokenFallback",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.9;\r\n\r\n /*\r\n * Contract that is working with ERC223 tokens\r\n */\r\n \r\n contract ContractReceiver {    \r\n    function tokenFallback(address _from, uint _value, bytes _data) public pure;\r\n}\r\n",
+  "sourcePath": "/Users/duongkhong/Documents/Projects/coincapo/smartcontracts/contracts/Token/Receiver_Interface.sol",
+  "ast": {
+    "absolutePath": "/Users/duongkhong/Documents/Projects/coincapo/smartcontracts/contracts/Token/Receiver_Interface.sol",
+    "exportedSymbols": {
+      "ContractReceiver": [
+        643
+      ]
+    },
+    "id": 644,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 633,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".9"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:4"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 643,
+        "linearizedBaseContracts": [
+          643
+        ],
+        "name": "ContractReceiver",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 642,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "tokenFallback",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 640,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 635,
+                  "name": "_from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 642,
+                  "src": "149:13:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 634,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "149:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 637,
+                  "name": "_value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 642,
+                  "src": "164:11:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 636,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "164:4:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 639,
+                  "name": "_data",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 642,
+                  "src": "177:11:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 638,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "177:5:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "148:41:4"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 641,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "201:0:4"
+            },
+            "scope": 643,
+            "src": "126:76:4",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 644,
+        "src": "89:116:4"
+      }
+    ],
+    "src": "0:207:4"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/duongkhong/Documents/Projects/coincapo/smartcontracts/contracts/Token/Receiver_Interface.sol",
+    "exportedSymbols": {
+      "ContractReceiver": [
+        643
+      ]
+    },
+    "id": 644,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 633,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".9"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:4"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 643,
+        "linearizedBaseContracts": [
+          643
+        ],
+        "name": "ContractReceiver",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 642,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "tokenFallback",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 640,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 635,
+                  "name": "_from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 642,
+                  "src": "149:13:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 634,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "149:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 637,
+                  "name": "_value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 642,
+                  "src": "164:11:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 636,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "164:4:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 639,
+                  "name": "_data",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 642,
+                  "src": "177:11:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 638,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "177:5:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "148:41:4"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 641,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "201:0:4"
+            },
+            "scope": 643,
+            "src": "126:76:4",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 644,
+        "src": "89:116:4"
+      }
+    ],
+    "src": "0:207:4"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-06-19T08:39:28.429Z"
+}
