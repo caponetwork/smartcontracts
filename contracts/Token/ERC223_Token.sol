@@ -104,10 +104,11 @@ contract ERC223Token is ERC223, SafeMath {
   }
 
   function transferFrom(address _from, address _to, uint _value) returns (bool) {
-    if (balanceOf(_from) >= _value && allowance(_from,msg.sender) >= _value && balanceOf(_to) + _value >= balanceOf(_to) {
+    if (balanceOf(_from) >= _value && allowance(_from, msg.sender) >= _value && balanceOf(_to) + _value >= balanceOf(_to) {
       bytes memory empty;
       balances[_from] = safeSub(balanceOf(_from), _value);
       balances[_to] = safeAdd(balanceOf(_to), _value);
+      allowed[_from][msg.sender] = safeSub(allowance(_from, msg.sender), _value);
 
       if (isContract(_to)) {
           // transfer to contract
