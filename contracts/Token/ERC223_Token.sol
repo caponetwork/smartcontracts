@@ -3,8 +3,9 @@ pragma solidity ^0.4.9;
 import "./Receiver_Interface.sol";
 import "./ERC223_Interface.sol";
 import "../SafeMath/SafeMath.sol";
+import "./ERC20_Compatible.sol"
 
-contract ERC223Token is ERC223, SafeMath {
+contract ERC223Token is ERC223, SafeMath, ERC20_Compatible {
 
   mapping(address => uint) balances;
   mapping (address => mapping (address => uint)) allowed;
@@ -108,6 +109,7 @@ contract ERC223Token is ERC223, SafeMath {
       bytes memory empty;
       balances[_from] = safeSub(balanceOf(_from), _value);
       balances[_to] = safeAdd(balanceOf(_to), _value);
+
       allowed[_from][msg.sender] = safeSub(allowance(_from, msg.sender), _value);
 
       if (isContract(_to)) {

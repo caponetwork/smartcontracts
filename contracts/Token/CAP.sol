@@ -1,8 +1,8 @@
 pragma solidity ^0.4.9;
 
-import "./ERC223_Token.sol";
+import "./UnlimitedAllowanceToken.sol";
 
-contract CAP is ERC223Token {
+contract CAP is UnlimitedAllowanceToken {
     function CAP() {
     	decimals = 18;
     	totalSupply = 10**27; // 1 billion tokens, 18 decimal places
