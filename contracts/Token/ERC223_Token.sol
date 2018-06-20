@@ -3,7 +3,7 @@ pragma solidity ^0.4.9;
 import "./Receiver_Interface.sol";
 import "./ERC223_Interface.sol";
 import "../SafeMath/SafeMath.sol";
-import "./ERC20_Compatible.sol"
+import "./ERC20_Compatible.sol";
 
 contract ERC223Token is ERC223, SafeMath, ERC20_Compatible {
 
@@ -75,7 +75,7 @@ contract ERC223Token is ERC223, SafeMath, ERC20_Compatible {
 }
 
   //assemble the given address bytecode. If bytecode exists then the _addr is a contract.
-  function isContract(address _addr) private view returns (bool is_contract) {
+  function isContract(address _addr) internal view returns (bool is_contract) {
       uint length;
       assembly {
             //retrieve the size of the code on target address, this needs assembly
@@ -105,7 +105,7 @@ contract ERC223Token is ERC223, SafeMath, ERC20_Compatible {
   }
 
   function transferFrom(address _from, address _to, uint _value) returns (bool) {
-    if (balanceOf(_from) >= _value && allowance(_from, msg.sender) >= _value && balanceOf(_to) + _value >= balanceOf(_to) {
+    if (balanceOf(_from) >= _value && allowance(_from, msg.sender) >= _value && balanceOf(_to) + _value >= balanceOf(_to)) {
       bytes memory empty;
       balances[_from] = safeSub(balanceOf(_from), _value);
       balances[_to] = safeAdd(balanceOf(_to), _value);
@@ -115,7 +115,7 @@ contract ERC223Token is ERC223, SafeMath, ERC20_Compatible {
       if (isContract(_to)) {
           // transfer to contract
         ContractReceiver receiver = ContractReceiver(_to);
-        receiver.tokenFallback(_from, _value, _data);
+        receiver.tokenFallback(_from, _value, empty);
       }
       
       emit Transfer(_from, _to, _value, empty);
