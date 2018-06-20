@@ -36,9 +36,9 @@ contract('CAP', function(accounts) {
 	it('Should initialize owner balance to totalSupply', function() {
 		return CAP.deployed().then(function(instance) {
 	      	return Promise.all([instance.balanceOf(accounts[0]), instance.totalSupply()]);
-	    }).then(function(results) {
+	    }).then(function(results) {	    	
 	    	const balance = results[0].toNumber();
-	    	const totalSupply = results[1].toNumber();	    	
+	    	const totalSupply = results[1].toNumber();
 	      	assert.equal(balance, totalSupply, "owner's balance is not equal totalSupply");
 	    });
 	});

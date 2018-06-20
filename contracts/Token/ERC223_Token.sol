@@ -13,7 +13,7 @@ contract ERC223Token is ERC223, SafeMath, ERC20_Compatible {
   string public name;
   string public symbol;
   uint8 public decimals;
-  uint256 public totalSupply;
+  uint public totalSupply;
     
   // Function to access name of token .
   function name() public view returns (string _name) {
@@ -28,7 +28,7 @@ contract ERC223Token is ERC223, SafeMath, ERC20_Compatible {
       return decimals;
   }
   // Function to access total supply of tokens .
-  function totalSupply() public view returns (uint256 _totalSupply) {
+  function totalSupply() public view returns (uint _totalSupply) {
       return totalSupply;
   }
   
