@@ -7,7 +7,8 @@ import "../SafeMath/SafeMath.sol";
 contract ERC223Token is ERC223, SafeMath {
 
   mapping(address => uint) balances;
-  
+  mapping (address => mapping (address => uint)) allowed;
+
   string public name;
   string public symbol;
   uint8 public decimals;
@@ -32,8 +33,7 @@ contract ERC223Token is ERC223, SafeMath {
   
   
   // Function that is called when a user or another contract wants to transfer funds .
-  function transfer(address _to, uint _value, bytes _data, string _custom_fallback) public returns (bool success) {
-      
+  function transfer(address _to, uint _value, bytes _data, string _custom_fallback) public returns (bool success) {      
     if(isContract(_to)) {
         if (balanceOf(msg.sender) < _value) revert();
         balances[msg.sender] = safeSub(balanceOf(msg.sender), _value);
@@ -49,8 +49,7 @@ contract ERC223Token is ERC223, SafeMath {
   
 
   // Function that is called when a user or another contract wants to transfer funds .
-  function transfer(address _to, uint _value, bytes _data) public returns (bool success) {
-      
+  function transfer(address _to, uint _value, bytes _data) public returns (bool success) {      
     if(isContract(_to)) {
         return transferToContract(_to, _value, _data);
     }
@@ -102,8 +101,34 @@ contract ERC223Token is ERC223, SafeMath {
     receiver.tokenFallback(msg.sender, _value, _data);
     emit Transfer(msg.sender, _to, _value, _data);
     return true;
-}
+  }
 
+  function transferFrom(address _from, address _to, uint _value) returns (bool) {
+    if (balanceOf(_from) >= _value && allowance(_from,msg.sender) >= _value && balanceOf(_to) + _value >= balanceOf(_to) {
+      bytes memory empty;
+      balances[_from] = safeSub(balanceOf(_from), _value);
+      balances[_to] = safeAdd(balanceOf(_to), _value);
+
+      if (isContract(_to)) {
+          // transfer to contract
+        ContractReceiver receiver = ContractReceiver(_to);
+        receiver.tokenFallback(_from, _value, _data);
+      }
+      
+      emit Transfer(_from, _to, _value, empty);
+      return true;
+    } else { return false; }
+  }
+
+  function approve(address _spender, uint _value) returns (bool) {
+    allowed[msg.sender][_spender] = _value;
+    Approval(msg.sender, _spender, _value);
+    return true;
+  }
+
+  function allowance(address _owner, address _spender) constant returns (uint) {
+    return allowed[_owner][_spender];
+  }
 
   function balanceOf(address _owner) public view returns (uint balance) {
     return balances[_owner];
