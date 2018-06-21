@@ -12,7 +12,11 @@ install:
   - npm install -g ethereumjs-testrpc
   - npm install -g web3
 
-before_script:
+cache:
+  directories:
+    - "node_modules"
+
+before_script:  
   - testrpc > testrpc.log &
 
 script:
