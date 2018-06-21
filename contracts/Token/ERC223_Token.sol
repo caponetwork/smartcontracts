@@ -104,7 +104,7 @@ contract ERC223Token is ERC223, SafeMath, ERC20_Compatible {
     return true;
   }
 
-  function transferFrom(address _from, address _to, uint _value) returns (bool) {
+  function transferFrom(address _from, address _to, uint _value) public returns (bool success) {
     if (balanceOf(_from) >= _value && allowance(_from, msg.sender) >= _value && balanceOf(_to) + _value >= balanceOf(_to)) {
       bytes memory empty;
       balances[_from] = safeSub(balanceOf(_from), _value);
@@ -120,7 +120,7 @@ contract ERC223Token is ERC223, SafeMath, ERC20_Compatible {
       
       emit Transfer(_from, _to, _value, empty);
       return true;
-    } else { return false; }
+    } else { revert(); }
   }
 
   function approve(address _spender, uint _value) returns (bool) {

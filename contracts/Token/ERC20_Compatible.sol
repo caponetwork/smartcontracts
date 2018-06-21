@@ -9,7 +9,7 @@ contract ERC20_Compatible {
     /// @param _to The address of the recipient
     /// @param _value The amount of token to be transferred
     /// @return Whether the transfer was successful or not
-    function transferFrom(address _from, address _to, uint _value) returns (bool success) {}
+    function transferFrom(address _from, address _to, uint _value) public returns (bool success) {}
 
     /// @notice `msg.sender` approves `_addr` to spend `_value` tokens
     /// @param _spender The address of the account able to transfer the tokens

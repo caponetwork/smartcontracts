@@ -6,6 +6,13 @@ var CAP = artifacts.require('./Token/CAP.sol');
 contract('CAP', function(accounts) {
 	const owner = accounts[0];
 	const user1 = accounts[1];
+	const user2 = accounts[2];
+	const user3 = accounts[2];
+
+	// var cap;
+	// beforeEach('setup contract for each test', async function () {
+ //      	cap = await CAP.new({from: owner});
+ //    });
 
 	it('Should have correct decimals', function() {
 		return CAP.deployed()
@@ -13,7 +20,7 @@ contract('CAP', function(accounts) {
 	      	return instance.decimals();
 	    })
 	    .then(function(decimals) {
-	      	assert.equal(decimals, 18, "decimals is not 18");
+	      	
 	    });
 	});
 
@@ -76,6 +83,60 @@ contract('CAP', function(accounts) {
 	it('Should return true on a 0 value transfer', async () => {
 		let instance = await CAP.deployed();
 		const result = await instance.transfer(user1, 0, {from: owner});
-		assert.equal(result.logs[0].args.value.toNumber(), 0, 'value is not 0');		
+		assert.equal(result.logs[0].args.value.toNumber(), 0, 'value is not 0');
+	});
+
+	it('Should return false if owner has insufficient balance', async () => {
+		let instance = await CAP.deployed();
+		const ownerBalance = await instance.balanceOf(owner);		
+		const amountToTransfer = ownerBalance.plus(10**18).toNumber();		
+		await instance.approve(user1, amountToTransfer, {from: owner});
+		const result = await instance.transferFrom(owner, user1, amountToTransfer, {from: owner})
+		.then(function(result) {
+			if (result.logs.length > 0) {
+				return true
+			}
+			return false;
+		})
+		.catch(function(error) {			
+			return false;
+		});		
+		assert.equal(result, false, 'Should return false if owner has insufficient balance');
+	});
+
+	it('Should return false if spender has insufficient balance', async () => {
+		let instance = await CAP.new({from: owner});
+		const ownerBalance = await instance.balanceOf(owner);
+		const user1Allowance = await instance.allowance(owner, user1);
+		assert.equal(user1Allowance.comparedTo(ownerBalance) < 0, true, 'allowance must be less than owner balance');
+		
+		const amountToTransfer = ownerBalance.toNumber();		
+		const result = await instance.transferFrom(owner, user1, amountToTransfer, {from: user1})
+		.then(function(result) {
+			if (result.logs.length > 0) {
+				return true
+			}
+			return false;
+		})
+		.catch(function(error) {			
+			return false;
+		});		
+		assert.equal(result, false, 'Should return false if spender has insufficient balance');
+	});
+
+	it('should return true on a 0 value transfer', async () => {
+		let instance = await CAP.deployed();		
+		const amountToTransfer = new BigNumber(0)
+		const result = await instance.transferFrom(owner, user1, amountToTransfer.toNumber(), {from: user1})
+		.then(function(result) {
+			if (result.logs.length > 0) {
+				return true
+			}
+			return false;
+		})
+		.catch(function(error) {			
+			return false;
+		});		
+		assert.equal(result, true, 'should return true on a 0 value transfer');
 	});
 });
