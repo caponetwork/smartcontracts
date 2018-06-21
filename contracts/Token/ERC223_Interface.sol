@@ -9,7 +9,7 @@ contract ERC223 {
   function name() public view returns (string _name);
   function symbol() public view returns (string _symbol);
   function decimals() public view returns (uint8 _decimals);
-  function totalSupply() public view returns (uint256 _supply);
+  function totalSupply() public view returns (uint _supply);
 
   function transfer(address to, uint value) public returns (bool ok);
   function transfer(address to, uint value, bytes data) public returns (bool ok);

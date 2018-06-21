@@ -16,11 +16,5 @@ module.exports = function(deployer, network, accounts) {
   	})
   	.then(function(balance) {
   		console.log(`${uploadAccount} balance: ${balance}`);
-  		var amount = new BigNumber(10**18).toString();
-  		console.log(`amount: ${amount}`);
-  		return cap.transfer(fundedAccount, web3.utils.toHex(amount), {from: uploadAccount});
-  	})
-  	.then(function(result) {
-  		console.log(result);
-  	});
+  	});  	
 };
