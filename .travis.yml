@@ -11,6 +11,7 @@ install:
   - npm install -g truffle-config
   - npm install -g ethereumjs-testrpc
   - npm install -g web3
+  - npm install
 
 cache:
   directories:
@@ -18,9 +19,6 @@ cache:
 
 before_script:  
   - testrpc > testrpc.log &
-
-install:
-  - npm install
 
 script:
   - truffle test
