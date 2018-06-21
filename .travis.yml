@@ -19,5 +19,8 @@ cache:
 before_script:  
   - testrpc > testrpc.log &
 
+install:
+  - npm install
+
 script:
   - truffle test
