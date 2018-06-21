@@ -1,0 +1,27 @@
+{
+  "name": "smartcontracts",
+  "version": "0.0.1",
+  "description": "capo smartcontracts",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "bignumber.js": "^7.2.1",
+    "web3": "^1.0.0-beta.34"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coincapo/smartcontracts.git"
+  },
+  "author": "steve khong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/coincapo/smartcontracts/issues"
+  },
+  "homepage": "https://github.com/coincapo/smartcontracts#readme"
+}
