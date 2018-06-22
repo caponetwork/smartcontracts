@@ -5,20 +5,17 @@ language: node_js
 node_js:
   - "9.3.0"
 
+cache:
+  directories:
+    - "$HOME/.npm"
+
 install:
   - npm install -g truffle
   - npm install -g truffle-expect
   - npm install -g truffle-config
   - npm install -g ethereumjs-testrpc
   - npm install -g web3
-  - npm install
-
-cache:
-  directories:
-    - "node_modules"
+  - npm ci
 
 before_script:  
   - testrpc > testrpc.log &
-
-script:
-  - truffle test
