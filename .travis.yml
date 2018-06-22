@@ -6,16 +6,9 @@ node_js:
   - "9.3.0"
 
 install:
-  - npm install -g truffle
-  - npm install -g truffle-expect
-  - npm install -g truffle-config
-  - npm install -g ethereumjs-testrpc
-  - npm install -g web3
+  - npm install -g truffle  
 
 cache:
   directories:
     - "node_modules"
     - $HOME/.npm
-
-before_script:  
-  - testrpc > testrpc.log &
