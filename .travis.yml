@@ -7,7 +7,7 @@ node_js:
 
 install:
   - npm install -g truffle  
-  - npm install -g web3
+  - npm install
 
 cache:
   directories:
