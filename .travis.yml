@@ -5,7 +5,7 @@ language: node_js
 node_js:
   - "9.3.0"
 
-before_install:
+install:
   - npm install -g truffle
   - npm install -g truffle-expect
   - npm install -g truffle-config
