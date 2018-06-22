@@ -5,7 +5,7 @@ language: node_js
 node_js:
   - "9.3.0"
 
-install:
+before_install:
   - npm install -g truffle
   - npm install -g truffle-expect
   - npm install -g truffle-config
@@ -15,9 +15,7 @@ install:
 cache:
   directories:
     - "node_modules"
+    - $HOME/.npm
 
 before_script:  
   - testrpc > testrpc.log &
-
-script:
-  - truffle test
