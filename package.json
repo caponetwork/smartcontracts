@@ -13,7 +13,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "truffle test"
+    "test": "truffle test",
+    "build": "truffle compile"
   },
   "repository": {
     "type": "git",
