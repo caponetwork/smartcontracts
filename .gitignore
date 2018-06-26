@@ -56,3 +56,5 @@ fabric.properties
 .idea/workspace.xml
 .idea/workspace.xml
 .idea/workspace.xml
+.vscode/settings.json
+.vscode/tasks.json
