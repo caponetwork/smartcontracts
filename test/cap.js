@@ -6,7 +6,6 @@ const UNLIMITED_ALLOWANCE_IN_BASE_UNITS = new BigNumber(2).pow(256).minus(1)
 contract('CAP', function(accounts) {
 	const owner = accounts[0];
 	const user1 = accounts[1];	
-
 	// var cap;
 	// beforeEach('setup contract for each test', async function () {
  //      	cap = await CAP.new({from: owner});
@@ -147,31 +146,32 @@ contract('CAP', function(accounts) {
         await instance.transferFrom(owner, user1, amountToTransfer, {from: user1});
         const newSpenderAllowance = await instance.allowance(owner, user1);        
         assert.equal(initSpenderAllowance, newSpenderAllowance.toString());        
-    });
+	});
 
-    it('should transfer the correct balances if spender has sufficient allowance', async () => {
-    	const instance = await CAP.new({from: owner});
-    	const ownerBalance = await instance.balanceOf(owner);
-    	const user1Balance = await instance.balanceOf(user1);
-    	const amountToTransfer = ownerBalance.toString();
-    	const initSpenderAllowance = amountToTransfer;
-    	await instance.approve(user1, initSpenderAllowance, {from: owner});
-        await instance.transferFrom(owner, user1, amountToTransfer, {from: user1});
-        const newOwnerBalance = await instance.balanceOf(owner);
-    	const newUser1Balance = await instance.balanceOf(user1);
-    	assert(newOwnerBalance.eq(0));
-    	assert(newUser1Balance.eq(ownerBalance), true);
-    });
+	it('should transfer the correct balances if spender has sufficient allowance', async () => {
+		const instance = await CAP.new({from: owner});
+		const ownerBalance = await instance.balanceOf(owner);
+		const user1Balance = await instance.balanceOf(user1);
+		const amountToTransfer = ownerBalance.toString();
+		const initSpenderAllowance = amountToTransfer;
+		await instance.approve(user1, initSpenderAllowance, {from: owner});
+		await instance.transferFrom(owner, user1, amountToTransfer, {from: user1});
+		const newOwnerBalance = await instance.balanceOf(owner);
+		const newUser1Balance = await instance.balanceOf(user1);
+		assert(newOwnerBalance.eq(0));
+		assert(newUser1Balance.eq(ownerBalance), true);
+	});
 
-    it('should modify allowance if spender has sufficient allowance less than 2^256 - 1', async () => {
-    	const instance = await CAP.new({from: owner});
-    	const ownerBalance = await instance.balanceOf(owner);
-    	const user1Balance = await instance.balanceOf(user1);
-    	const amountToTransfer = ownerBalance.toString();
-    	const initSpenderAllowance = amountToTransfer;
-    	await instance.approve(user1, initSpenderAllowance, {from: owner});
-			await instance.transferFrom(owner, user1, amountToTransfer, {from: user1});
-			const newSpenderAllowance = await instance.allowance(owner, user1);
-			assert(newSpenderAllowance.eq(0));
-    });
+
+	it('should modify allowance if spender has sufficient allowance less than 2^256 - 1', async () => {
+		const instance = await CAP.new({from: owner});
+		const ownerBalance = await instance.balanceOf(owner);
+		const user1Balance = await instance.balanceOf(user1);
+		const amountToTransfer = ownerBalance.toString();
+		const initSpenderAllowance = amountToTransfer;
+		await instance.approve(user1, initSpenderAllowance, {from: owner});
+		await instance.transferFrom(owner, user1, amountToTransfer, {from: user1});
+		const newSpenderAllowance = await instance.allowance(owner, user1);
+		assert(newSpenderAllowance.eq(0));
+	});
 });
