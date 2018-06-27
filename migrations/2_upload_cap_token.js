@@ -11,8 +11,8 @@ module.exports = function(deployer, network, accounts) {
 	console.log(`fundedAccount: ${fundedAccount}`);	
   	deployer.deploy(CAP, {from: uploadAccount})
   	.then(function(instance) {
-		cap = instance;
-		return cap.balanceOf(uploadAccount);
+			cap = instance;
+			return cap.balanceOf(uploadAccount);
   	})
   	.then(function(balance) {
   		console.log(`${uploadAccount} balance: ${balance}`);

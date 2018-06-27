@@ -5,9 +5,7 @@ const UNLIMITED_ALLOWANCE_IN_BASE_UNITS = new BigNumber(2).pow(256).minus(1)
 
 contract('CAP', function(accounts) {
 	const owner = accounts[0];
-	const user1 = accounts[1];
-	const user2 = accounts[2];
-	const user3 = accounts[2];
+	const user1 = accounts[1];	
 
 	// var cap;
 	// beforeEach('setup contract for each test', async function () {
@@ -20,7 +18,7 @@ contract('CAP', function(accounts) {
 	      	return instance.decimals();
 	    })
 	    .then(function(decimals) {
-	      	
+	      	assert.equal(decimals, 18, 'decimals is not 18');
 	    });
 	});
 
@@ -172,8 +170,8 @@ contract('CAP', function(accounts) {
     	const amountToTransfer = ownerBalance.toString();
     	const initSpenderAllowance = amountToTransfer;
     	await instance.approve(user1, initSpenderAllowance, {from: owner});
-        await instance.transferFrom(owner, user1, amountToTransfer, {from: user1});
-        const newSpenderAllowance = await instance.allowance(owner, user1);
-        assert(newSpenderAllowance.eq(0));
+			await instance.transferFrom(owner, user1, amountToTransfer, {from: user1});
+			const newSpenderAllowance = await instance.allowance(owner, user1);
+			assert(newSpenderAllowance.eq(0));
     });
 });
