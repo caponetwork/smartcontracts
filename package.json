@@ -9,12 +9,14 @@
   "dependencies": {
     "bignumber.js": "^7.2.1",
     "openzeppelin-solidity": "1.10.0",
+    "truffle": "^4.1.13",
     "web3": "^1.0.0-beta.34"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "truffle test",
-    "build": "truffle compile"
+    "test": "./node_modules/.bin/truffle test",
+    "migrate": "./node_modules/.bin/truffle migrate --reset",
+    "build": "./node_modules/.bin/truffle compile"
   },
   "repository": {
     "type": "git",
