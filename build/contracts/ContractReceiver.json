@@ -2,7 +2,7 @@
   "contractName": "ContractReceiver",
   "abi": [
     {
-      "constant": true,
+      "constant": false,
       "inputs": [
         {
           "name": "_from",
@@ -20,7 +20,7 @@
       "name": "tokenFallback",
       "outputs": [],
       "payable": false,
-      "stateMutability": "view",
+      "stateMutability": "nonpayable",
       "type": "function"
     }
   ],
@@ -28,20 +28,20 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.9;\n\n/*\n * Contract that is working with ERC223 tokens\n */\n \ncontract ContractReceiver {    \n  function tokenFallback(address _from, uint256 _value, bytes _data) public view;\n}\n",
+  "source": "pragma solidity ^0.4.9;\n\n/*\n * Contract that is working with ERC223 tokens\n */\n \ncontract ContractReceiver {    \n  function tokenFallback(address _from, uint256 _value, bytes _data) external;\n}\n",
   "sourcePath": "/Users/duongkhong/Documents/Projects/coincapo/smartcontracts/contracts/Token/Receiver_Interface.sol",
   "ast": {
     "absolutePath": "/Users/duongkhong/Documents/Projects/coincapo/smartcontracts/contracts/Token/Receiver_Interface.sol",
     "exportedSymbols": {
       "ContractReceiver": [
-        748
+        935
       ]
     },
-    "id": 749,
+    "id": 936,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 738,
+        "id": 925,
         "literals": [
           "solidity",
           "^",
@@ -57,9 +57,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 748,
+        "id": 935,
         "linearizedBaseContracts": [
-          748
+          935
         ],
         "name": "ContractReceiver",
         "nodeType": "ContractDefinition",
@@ -67,23 +67,23 @@
           {
             "body": null,
             "documentation": null,
-            "id": 747,
+            "id": 934,
             "implemented": false,
             "isConstructor": false,
-            "isDeclaredConst": true,
+            "isDeclaredConst": false,
             "modifiers": [],
             "name": "tokenFallback",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 745,
+              "id": 932,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 740,
+                  "id": 927,
                   "name": "_from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 747,
+                  "scope": 934,
                   "src": "138:13:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -92,7 +92,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 739,
+                    "id": 926,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "138:7:4",
@@ -106,10 +106,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 742,
+                  "id": 929,
                   "name": "_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 747,
+                  "scope": 934,
                   "src": "153:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -118,7 +118,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 741,
+                    "id": 928,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "153:7:4",
@@ -132,19 +132,19 @@
                 },
                 {
                   "constant": false,
-                  "id": 744,
+                  "id": 931,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 747,
+                  "scope": 934,
                   "src": "169:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeIdentifier": "t_bytes_calldata_ptr",
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 743,
+                    "id": 930,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "169:5:4",
@@ -161,36 +161,36 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 746,
+              "id": 933,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "193:0:4"
+              "src": "190:0:4"
             },
-            "scope": 748,
-            "src": "115:79:4",
-            "stateMutability": "view",
+            "scope": 935,
+            "src": "115:76:4",
+            "stateMutability": "nonpayable",
             "superFunction": null,
-            "visibility": "public"
+            "visibility": "external"
           }
         ],
-        "scope": 749,
-        "src": "81:115:4"
+        "scope": 936,
+        "src": "81:112:4"
       }
     ],
-    "src": "0:197:4"
+    "src": "0:194:4"
   },
   "legacyAST": {
     "absolutePath": "/Users/duongkhong/Documents/Projects/coincapo/smartcontracts/contracts/Token/Receiver_Interface.sol",
     "exportedSymbols": {
       "ContractReceiver": [
-        748
+        935
       ]
     },
-    "id": 749,
+    "id": 936,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 738,
+        "id": 925,
         "literals": [
           "solidity",
           "^",
@@ -206,9 +206,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 748,
+        "id": 935,
         "linearizedBaseContracts": [
-          748
+          935
         ],
         "name": "ContractReceiver",
         "nodeType": "ContractDefinition",
@@ -216,23 +216,23 @@
           {
             "body": null,
             "documentation": null,
-            "id": 747,
+            "id": 934,
             "implemented": false,
             "isConstructor": false,
-            "isDeclaredConst": true,
+            "isDeclaredConst": false,
             "modifiers": [],
             "name": "tokenFallback",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 745,
+              "id": 932,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 740,
+                  "id": 927,
                   "name": "_from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 747,
+                  "scope": 934,
                   "src": "138:13:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -241,7 +241,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 739,
+                    "id": 926,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "138:7:4",
@@ -255,10 +255,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 742,
+                  "id": 929,
                   "name": "_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 747,
+                  "scope": 934,
                   "src": "153:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -267,7 +267,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 741,
+                    "id": 928,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "153:7:4",
@@ -281,19 +281,19 @@
                 },
                 {
                   "constant": false,
-                  "id": 744,
+                  "id": 931,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 747,
+                  "scope": 934,
                   "src": "169:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeIdentifier": "t_bytes_calldata_ptr",
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 743,
+                    "id": 930,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "169:5:4",
@@ -310,23 +310,23 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 746,
+              "id": 933,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "193:0:4"
+              "src": "190:0:4"
             },
-            "scope": 748,
-            "src": "115:79:4",
-            "stateMutability": "view",
+            "scope": 935,
+            "src": "115:76:4",
+            "stateMutability": "nonpayable",
             "superFunction": null,
-            "visibility": "public"
+            "visibility": "external"
           }
         ],
-        "scope": 749,
-        "src": "81:115:4"
+        "scope": 936,
+        "src": "81:112:4"
       }
     ],
-    "src": "0:197:4"
+    "src": "0:194:4"
   },
   "compiler": {
     "name": "solc",
@@ -334,5 +334,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-06-28T03:52:56.688Z"
+  "updatedAt": "2018-07-02T07:42:28.468Z"
 }

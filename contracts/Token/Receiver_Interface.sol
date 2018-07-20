@@ -5,5 +5,5 @@ pragma solidity ^0.4.9;
  */
  
 contract ContractReceiver {    
-  function tokenFallback(address _from, uint256 _value, bytes _data) public;
+  function tokenFallback(address _from, uint256 _value, bytes _data) external;
 }
