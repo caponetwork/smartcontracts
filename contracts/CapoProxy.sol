@@ -1,0 +1,269 @@
+pragma solidity ^0.4.24;
+pragma experimental ABIEncoderV2;
+
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+
+contract CapoProxy is Ownable {
+
+  struct Order {
+		address makerAddress;           // Address that created the order.      
+		address takerAddress;           // Address that is allowed to fill the order. If set to 0, any address is allowed to fill the order.          
+		address feeRecipientAddress;    // Address that will recieve fees when order is filled.      
+		address senderAddress;          // Address that is allowed to call Exchange contract methods that affect this order. If set to 0, any address is allowed to call these methods.
+		uint256 makerAssetAmount;       // Amount of makerAsset being offered by maker. Must be greater than 0.        
+		uint256 takerAssetAmount;       // Amount of takerAsset being bid on by maker. Must be greater than 0.        
+		uint256 makerFee;               // Amount of ZRX paid to feeRecipient by maker when order is filled. If set to 0, no transfer of ZRX from maker to feeRecipient will be attempted.
+		uint256 takerFee;               // Amount of ZRX paid to feeRecipient by taker when order is filled. If set to 0, no transfer of ZRX from taker to feeRecipient will be attempted.
+		uint256 expirationTimeSeconds;  // Timestamp in seconds at which order expires.          
+		uint256 salt;                   // Arbitrary number to facilitate uniqueness of the order's hash.     
+		bytes makerAssetData;           // Encoded data that can be decoded by a specified proxy contract when transferring makerAsset. The last byte references the id of this proxy.
+		bytes takerAssetData;           // Encoded data that can be decoded by a specified proxy contract when transferring takerAsset. The last byte references the id of this proxy.
+  }
+
+	/// @dev Address is authorized or not
+	mapping (address => bool) public authorized;
+
+	/// @dev list authorized addresses
+	address[] public authorities;
+
+	/// @dev WETH token address
+	address public wethAddress;
+
+	/// @dev Total weth amount is withdrew by owner
+	uint256 private totalWithdraw;
+	
+	/// @dev Contructure function
+	/// @param _wethAddress Address of WETH token
+	constructor(address _wethAddress) public {		
+		wethAddress = _wethAddress;
+		addAuthorizedAddress(msg.sender);
+	}
+
+/* Events */
+
+	// Event logged when a new address is authorized.
+	event AuthorizedAddressAdded(
+			address indexed target,
+			address indexed caller
+	);
+
+	// Event logged when a currently authorized address is unauthorized.
+	event AuthorizedAddressRemoved(
+		address indexed target,
+		address indexed caller
+	);
+
+	// Event logged when onwer withdraw weth
+	event WithDraw(
+		address indexed to,
+		uint256 amount
+	);
+
+/** Modifier */
+
+	/// @dev Only authorized addresses can invoke functions with this modifier.
+	modifier onlyAuthorized {
+		require(
+			authorized[msg.sender],
+			"SENDER_NOT_AUTHORIZED"
+		);
+		_;
+	}
+
+	/// @dev Only order's maker addresses can invoke functions with this modifier.
+	modifier onlyMaker(address maker) {
+		require(
+			maker == msg.sender, 
+			"SENDER_IS_NOT_MARKER"
+		);
+		_;
+	}
+
+/** Owner functions */
+
+	/// @dev Withdraw weth amount to address
+	/// @param to Receiver address
+	/// @param amount number of tokens will be transfered
+	function withdraw(address to, uint256 amount) public onlyOwner {
+		string memory functionSignature = 'transfer(address, uint256)';
+		bytes memory encodedDatas = abi.encodeWithSelector(bytes4(keccak256(functionSignature)), address, amount);
+		require(wethAddress.call(encodedDatas));
+
+		// append total withdraw amount
+		totalWithdraw = totalWithdraw.add(amount);
+		emit WithDraw(to, amount);
+	}
+
+	/// @dev Get total amount of weth was withdrew
+	/// @return total amount
+	function getTotalWithdraw() public onlyOwner returns (uint256) {
+		return totalWithdraw;
+	}
+
+/** Authorized functions */
+	
+	/// @dev Authorizes an address.
+	/// @param target Address to authorize.
+	function addAuthorizedAddress(address target) external onlyOwner {
+		require(
+				!authorized[target],
+				"TARGET_ALREADY_AUTHORIZED"
+		);
+
+		authorized[target] = true;
+		authorities.push(target);
+		emit AuthorizedAddressAdded(target, msg.sender);
+	}
+
+	/// @dev Removes authorizion of an address.
+	/// @param target Address to remove authorization from.
+	function removeAuthorizedAddress(address target) external onlyOwner {
+		require(
+				authorized[target],
+				"TARGET_NOT_AUTHORIZED"
+		);
+
+		delete authorized[target];
+		for (uint256 i = 0; i < authorities.length; i++) {
+				if (authorities[i] == target) {
+						authorities[i] = authorities[authorities.length - 1];
+						authorities.length -= 1;
+						break;
+				}
+		}
+		emit AuthorizedAddressRemoved(target, msg.sender);
+	}
+
+	/// @dev Removes authorizion of an address.
+	/// @param target Address to remove authorization from.
+	/// @param index Index of target in authorities array.
+	function removeAuthorizedAddressAtIndex(
+		address target, 
+		uint256 index
+	) external onlyOwner {
+		require(
+				authorized[target],
+				"TARGET_NOT_AUTHORIZED"
+		);
+		require(
+				index < authorities.length,
+				"INDEX_OUT_OF_BOUNDS"
+		);
+		require(
+				authorities[index] == target,
+				"AUTHORIZED_ADDRESS_MISMATCH"
+		);
+
+		delete authorized[target];
+		authorities[index] = authorities[authorities.length - 1];
+		authorities.length -= 1;
+		emit AuthorizedAddressRemoved(target, msg.sender);
+	}
+
+	/// @dev Gets all authorized addresses.
+	/// @return Array of authorized addresses.
+	function getAuthorizedAddresses() external view returns (address[] memory) {
+		return authorities;
+	}
+
+/** 0x function */
+
+	/// @dev Cancels all orders created by makerAddress with a salt less than or equal to the targetOrderEpoch	
+	/// @param targetOrderEpoch Orders created with a salt less or equal to this value will be cancelled.
+	function cancelOrdersUpTo(
+		uint256 salt,
+		address signerAddress,
+		bytes data,
+		bytes signature
+	) public {
+		string memory functionSignature = 'executeTransaction(uint256,address,bytes,bytes)';
+		bytes memory encodedDatas = abi.encodeWithSelector(bytes4(keccak256(functionSignature)), salt, signerAddress, data,signature);
+		require(exchangeAddress.call(encodedDatas));
+	}
+
+	/// @dev After calling, the order can not be filled anymore. Msg.sender must be order's maker
+	/// Throws if order is invalid or sender does not have permission to cancel.
+	/// @param order Order to cancel. Order must be OrderStatus.FILLABLE.
+	function cancelOrder(
+		address exchangeAddress,
+		address[4] orderAddresses, // makerAddress, takerAddress, feeRecipientAddress, senderAddress
+		uint256[6] orderValues, // makerAssetAmount, takerAssetAmount, makerFee, takerFee, expirationTimeSeconds, salt
+		bytes[2] orderDatas // makerAssetData, takerAssetData
+	) public onlyMaker(orderAddresses[0]) {
+
+		Order memory order = Order(
+			orderAddresses[0],
+			orderAddresses[1],
+			orderAddresses[2],
+			orderAddresses[3],
+			orderValues[0],
+			orderValues[1],
+			orderValues[2],
+			orderValues[3],
+			orderValues[4],
+			orderValues[5],
+			orderDatas[0],
+			orderDatas[1]
+		);
+
+		string memory functionSignature = 'cancelOrder((address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes,bytes))';
+		bytes memory encodedDatas = abi.encodeWithSelector(bytes4(keccak256(functionSignature)), order);
+		require(exchangeAddress.call(encodedDatas));
+	}
+  
+	/// @dev Match two order. Only authorized msg.sender accepted
+	/// @param leftOrderAddresses First order's makerAddress, takerAddress, feeRecipientAddress, senderAddress
+	/// @param leftOrderValues First order's makerAssetAmount, takerAssetAmount, makerFee, takerFee, expirationTimeSeconds, salt
+	/// @param leftOrderDatas First order's makerAssetData, takerAssetData
+	/// @param rightOrderAddresses Second order's makerAddress, takerAddress, feeRecipientAddress, senderAddress
+	/// @param rightOrderValues Second order's makerAssetAmount, takerAssetAmount, makerFee, takerFee, expirationTimeSeconds, salt
+	/// @param rightOrderDatas Second order's makerAssetData, takerAssetData
+	/// @param leftSignature Proof that order was created by the left maker.
+  /// @param rightSignature Proof that order was created by the right maker.
+	function matchOrders(
+		address exchangeAddress,
+		address[4] leftOrderAddresses,
+		uint256[6] leftOrderValues, 
+		bytes[2] leftOrderDatas, 
+		address[4] rightOrderAddresses, 
+		uint256[6] rightOrderValues, 
+		bytes[2] rightOrderDatas, 
+		bytes memory leftSignature,
+		bytes memory rightSignature
+  ) public onlyAuthorized
+	{
+		Order memory leftOrder = Order(
+			leftOrderAddresses[0],
+			leftOrderAddresses[1],
+			leftOrderAddresses[2],
+			leftOrderAddresses[3],
+			leftOrderValues[0],
+			leftOrderValues[1],
+			leftOrderValues[2],
+			leftOrderValues[3],
+			leftOrderValues[4],
+			leftOrderValues[5],
+			leftOrderDatas[0],
+			leftOrderDatas[1]
+		);
+
+		Order memory rightOrder = Order(
+			rightOrderAddresses[0],
+			rightOrderAddresses[1],
+			rightOrderAddresses[2],
+			rightOrderAddresses[3],
+			rightOrderValues[0],
+			rightOrderValues[1],
+			rightOrderValues[2],
+			rightOrderValues[3],
+			rightOrderValues[4],
+			rightOrderValues[5],
+			rightOrderDatas[0],
+			rightOrderDatas[1]
+		);
+		string memory functionSignature = "matchOrders((address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes,bytes),(address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes,bytes)";
+		bytes memory encodedDatas = abi.encodeWithSelector(bytes4(keccak256(functionSignature)), leftOrder,rightOrder,leftSignature,rightSignature);
+		require(exchangeAddress.call(encodedDatas));
+	}
+}
