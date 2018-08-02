@@ -3,6 +3,5 @@ const Migrations = artifacts.require("./Migrations.sol")
       , DEV_ADDRESS = constants.DEV_ADDRESS;
 
 module.exports = function(deployer, network, accounts) {
-  console.log(network);
-  deployer.deploy(Migrations, {overwrite: false, from: DEV_ADDRESS, gas: constants.KOVAN_TX_DEFAULTS});
+  deployer.deploy(Migrations, {overwrite: true, from: DEV_ADDRESS, gas: constants.KOVAN_TX_DEFAULTS});
 };

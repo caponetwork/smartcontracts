@@ -19,7 +19,8 @@ const constants = require('./constants/constants')
       , DEV_PRIVATE_KEY = constants.DEV_PRIVATE_KEY;
 
 const ProviderEngine = require('web3-provider-engine')      
-      , RpcSubprovider = require('web3-provider-engine/subproviders/rpc.js')
+      , FilterSubprovider = require('web3-provider-engine/subproviders/filters.js')
+      , FetchSubprovider = require("web3-provider-engine/subproviders/fetch.js")
       , PrivateKeyWalletSubprovider = require('@0xproject/subproviders').PrivateKeyWalletSubprovider;
 
 module.exports = {
@@ -33,14 +34,16 @@ module.exports = {
     },
     
     kovan: {
-      host: KOVAN_RPC,
+      from: constants.DEV_ADDRESS,
       network_id: KOVAN_NETWORK_ID,      
+      gasPrice: 200000000000,
       provider: function () {
-        const engine = new ProviderEngine();
-        const rpcSubprovider = new RpcSubprovider({ rpcUrl: KOVAN_RPC })
+        const engine = new ProviderEngine();        
         const privateKeyWalletSubprovider = new PrivateKeyWalletSubprovider(DEV_PRIVATE_KEY);
-        engine.addProvider(privateKeyWalletSubprovider);
-        engine.addProvider(rpcSubprovider);
+        const filterSubprovider = new FilterSubprovider();
+        engine.addProvider(privateKeyWalletSubprovider);        
+        engine.addProvider(filterSubprovider);
+        engine.addProvider(new FetchSubprovider({ rpcUrl: KOVAN_RPC }));
         engine.start();
         return engine;
       }

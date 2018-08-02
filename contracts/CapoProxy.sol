@@ -5,7 +5,8 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract CapoProxy is Ownable {
-
+	using SafeMath for uint256;
+	
   struct Order {
 		address makerAddress;           // Address that created the order.      
 		address takerAddress;           // Address that is allowed to fill the order. If set to 0, any address is allowed to fill the order.          
@@ -87,7 +88,7 @@ contract CapoProxy is Ownable {
 	/// @param amount number of tokens will be transfered
 	function withdraw(address to, uint256 amount) public onlyOwner {
 		string memory functionSignature = 'transfer(address, uint256)';
-		bytes memory encodedDatas = abi.encodeWithSelector(bytes4(keccak256(functionSignature)), address, amount);
+		bytes memory encodedDatas = abi.encodeWithSelector(bytes4(keccak256(functionSignature)), to, amount);
 		require(wethAddress.call(encodedDatas));
 
 		// append total withdraw amount
@@ -105,7 +106,7 @@ contract CapoProxy is Ownable {
 	
 	/// @dev Authorizes an address.
 	/// @param target Address to authorize.
-	function addAuthorizedAddress(address target) external onlyOwner {
+	function addAuthorizedAddress(address target) public onlyOwner {
 		require(
 				!authorized[target],
 				"TARGET_ALREADY_AUTHORIZED"
@@ -169,50 +170,26 @@ contract CapoProxy is Ownable {
 
 /** 0x function */
 
-	/// @dev Cancels all orders created by makerAddress with a salt less than or equal to the targetOrderEpoch	
-	/// @param targetOrderEpoch Orders created with a salt less or equal to this value will be cancelled.
-	function cancelOrdersUpTo(
-		uint256 salt,
-		address signerAddress,
-		bytes data,
-		bytes signature
+	/// @dev Send executed transaction to exchange
+	/// @param exchangeAddress Exchange smartcontract address
+	/// @param salt Arbitrary number to ensure uniqueness of transaction hash.
+	/// @param signerAddress Address of transaction signer.
+	/// @param data AbiV2 encoded calldata.
+	/// @param signature Proof of signer transaction by signer.
+	function executeTransaction(
+		address exchangeAddress,
+			uint256 salt,
+			address signerAddress,
+			bytes data,
+			bytes signature
 	) public {
 		string memory functionSignature = 'executeTransaction(uint256,address,bytes,bytes)';
 		bytes memory encodedDatas = abi.encodeWithSelector(bytes4(keccak256(functionSignature)), salt, signerAddress, data,signature);
 		require(exchangeAddress.call(encodedDatas));
 	}
 
-	/// @dev After calling, the order can not be filled anymore. Msg.sender must be order's maker
-	/// Throws if order is invalid or sender does not have permission to cancel.
-	/// @param order Order to cancel. Order must be OrderStatus.FILLABLE.
-	function cancelOrder(
-		address exchangeAddress,
-		address[4] orderAddresses, // makerAddress, takerAddress, feeRecipientAddress, senderAddress
-		uint256[6] orderValues, // makerAssetAmount, takerAssetAmount, makerFee, takerFee, expirationTimeSeconds, salt
-		bytes[2] orderDatas // makerAssetData, takerAssetData
-	) public onlyMaker(orderAddresses[0]) {
-
-		Order memory order = Order(
-			orderAddresses[0],
-			orderAddresses[1],
-			orderAddresses[2],
-			orderAddresses[3],
-			orderValues[0],
-			orderValues[1],
-			orderValues[2],
-			orderValues[3],
-			orderValues[4],
-			orderValues[5],
-			orderDatas[0],
-			orderDatas[1]
-		);
-
-		string memory functionSignature = 'cancelOrder((address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes,bytes))';
-		bytes memory encodedDatas = abi.encodeWithSelector(bytes4(keccak256(functionSignature)), order);
-		require(exchangeAddress.call(encodedDatas));
-	}
-  
 	/// @dev Match two order. Only authorized msg.sender accepted
+	/// @param exchangeAddress Exchange smartcontract address
 	/// @param leftOrderAddresses First order's makerAddress, takerAddress, feeRecipientAddress, senderAddress
 	/// @param leftOrderValues First order's makerAssetAmount, takerAssetAmount, makerFee, takerFee, expirationTimeSeconds, salt
 	/// @param leftOrderDatas First order's makerAssetData, takerAssetData
