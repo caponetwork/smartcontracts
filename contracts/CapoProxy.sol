@@ -3,8 +3,9 @@ pragma experimental ABIEncoderV2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "./Token/Receiver_Interface.sol";
 
-contract CapoProxy is Ownable {
+contract CapoProxy is Ownable, ContractReceiver {
 	using SafeMath for uint256;
 	
   struct Order {

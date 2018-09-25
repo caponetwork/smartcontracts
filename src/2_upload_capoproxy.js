@@ -17,6 +17,7 @@ module.exports = (deployer, network, accounts) => {
 		
 		// Add authorized address
 		const authorizedAddresses = [
+			constants.DEV2,
 			constants.DEV3,
 			constants.DEV4,
 			constants.DEV5,
