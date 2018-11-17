@@ -34,14 +34,14 @@
     "absolutePath": "/Users/duongkhong/Documents/Projects/coincapo/smartcontracts/contracts/Token/Receiver_Interface.sol",
     "exportedSymbols": {
       "ContractReceiver": [
-        2473
+        2488
       ]
     },
-    "id": 2474,
+    "id": 2489,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2463,
+        "id": 2478,
         "literals": [
           "solidity",
           "^",
@@ -57,9 +57,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 2473,
+        "id": 2488,
         "linearizedBaseContracts": [
-          2473
+          2488
         ],
         "name": "ContractReceiver",
         "nodeType": "ContractDefinition",
@@ -67,7 +67,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 2472,
+            "id": 2487,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -75,15 +75,15 @@
             "name": "tokenFallback",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2470,
+              "id": 2485,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2465,
+                  "id": 2480,
                   "name": "_from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2472,
+                  "scope": 2487,
                   "src": "138:13:7",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -92,7 +92,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2464,
+                    "id": 2479,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "138:7:7",
@@ -106,10 +106,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2467,
+                  "id": 2482,
                   "name": "_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2472,
+                  "scope": 2487,
                   "src": "153:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -118,7 +118,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2466,
+                    "id": 2481,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "153:7:7",
@@ -132,10 +132,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2469,
+                  "id": 2484,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2472,
+                  "scope": 2487,
                   "src": "169:11:7",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -144,7 +144,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 2468,
+                    "id": 2483,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "169:5:7",
@@ -161,19 +161,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2471,
+              "id": 2486,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "190:0:7"
             },
-            "scope": 2473,
+            "scope": 2488,
             "src": "115:76:7",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 2474,
+        "scope": 2489,
         "src": "81:112:7"
       }
     ],
@@ -183,14 +183,14 @@
     "absolutePath": "/Users/duongkhong/Documents/Projects/coincapo/smartcontracts/contracts/Token/Receiver_Interface.sol",
     "exportedSymbols": {
       "ContractReceiver": [
-        2473
+        2488
       ]
     },
-    "id": 2474,
+    "id": 2489,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2463,
+        "id": 2478,
         "literals": [
           "solidity",
           "^",
@@ -206,9 +206,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 2473,
+        "id": 2488,
         "linearizedBaseContracts": [
-          2473
+          2488
         ],
         "name": "ContractReceiver",
         "nodeType": "ContractDefinition",
@@ -216,7 +216,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 2472,
+            "id": 2487,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -224,15 +224,15 @@
             "name": "tokenFallback",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2470,
+              "id": 2485,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2465,
+                  "id": 2480,
                   "name": "_from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2472,
+                  "scope": 2487,
                   "src": "138:13:7",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -241,7 +241,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2464,
+                    "id": 2479,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "138:7:7",
@@ -255,10 +255,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2467,
+                  "id": 2482,
                   "name": "_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2472,
+                  "scope": 2487,
                   "src": "153:14:7",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -267,7 +267,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2466,
+                    "id": 2481,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "153:7:7",
@@ -281,10 +281,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2469,
+                  "id": 2484,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2472,
+                  "scope": 2487,
                   "src": "169:11:7",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -293,7 +293,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 2468,
+                    "id": 2483,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "169:5:7",
@@ -310,19 +310,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2471,
+              "id": 2486,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "190:0:7"
             },
-            "scope": 2473,
+            "scope": 2488,
             "src": "115:76:7",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 2474,
+        "scope": 2489,
         "src": "81:112:7"
       }
     ],
@@ -334,5 +334,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-08-22T09:00:54.987Z"
+  "updatedAt": "2018-10-03T07:08:04.499Z"
 }

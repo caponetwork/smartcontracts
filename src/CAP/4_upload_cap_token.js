@@ -1,14 +1,25 @@
 const CAP = artifacts.require('./Token/CAP.sol')
-      , constants = require('../constants/constants')
+      , constants = require('../../constants/constants')
       , DEV_ADDRESS = constants.DEV_ADDRESS;
 
-let cap
-    , uploadAccount;    
+let cap;
+let uploadAccount;
+
+const options = {
+  overwrite: true
+};
 
 module.exports = (deployer, network, accounts) => {
   console.log(network);
-  uploadAccount = DEV_ADDRESS;    
-  deployer.deploy(CAP, {from: uploadAccount})
+  if (network === 'develop') {
+    uploadAccount = accounts[0];
+  } else {
+    uploadAccount = DEV_ADDRESS;  
+  }
+  
+  options.from = uploadAccount;
+
+  deployer.deploy(CAP, options)
   .then(instance => {    
     cap = instance;
     return cap.balanceOf(uploadAccount);

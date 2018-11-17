@@ -3,9 +3,8 @@ pragma experimental ABIEncoderV2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "./Token/Receiver_Interface.sol";
 
-contract CapoProxy is Ownable, ContractReceiver {
+contract CapoProxy is Ownable {
 	using SafeMath for uint256;
 	
   struct Order {
@@ -29,16 +28,10 @@ contract CapoProxy is Ownable, ContractReceiver {
 	/// @dev list authorized addresses
 	address[] public authorities;
 
-	/// @dev WETH token address
-	address public wethAddress;
-
-	/// @dev Total weth amount is withdrew by owner
-	uint256 private totalWithdraw;
+  mapping (address => uint256) public totalWithdraws;
 	
 	/// @dev Contructure function
-	/// @param _wethAddress Address of WETH token
-	constructor(address _wethAddress) public {		
-		wethAddress = _wethAddress;
+	constructor() public {
 		addAuthorizedAddress(msg.sender);
 	}
 
@@ -56,8 +49,9 @@ contract CapoProxy is Ownable, ContractReceiver {
 		address indexed caller
 	);
 
-	// Event logged when onwer withdraw weth
+	// Event logged when onwer withdraw token
 	event WithDraw(
+    address indexed asset,
 		address indexed to,
 		uint256 amount
 	);
@@ -84,23 +78,25 @@ contract CapoProxy is Ownable, ContractReceiver {
 
 /** Owner functions */
 
-	/// @dev Withdraw weth amount to address
+	/// @dev Withdraw amount of asset to address
 	/// @param to Receiver address
 	/// @param amount number of tokens will be transfered
-	function withdraw(address to, uint256 amount) public onlyOwner {
+	function withdraw(address asset, address to, uint256 amount) public onlyOwner {
 		string memory functionSignature = 'transfer(address, uint256)';
 		bytes memory encodedDatas = abi.encodeWithSelector(bytes4(keccak256(functionSignature)), to, amount);
-		require(wethAddress.call(encodedDatas));
+		require(asset.call(encodedDatas));
 
 		// append total withdraw amount
-		totalWithdraw = totalWithdraw.add(amount);
-		emit WithDraw(to, amount);
+    uint256 totalWithdraw = totalWithdraws[asset];
+    uint256 newTotalWithdraw = totalWithdraw.add(amount);
+    totalWithdraws[asset] = newTotalWithdraw;
+		emit WithDraw(asset, to, amount);
 	}
 
 	/// @dev Get total amount of weth was withdrew
 	/// @return total amount
-	function getTotalWithdraw() public onlyOwner returns (uint256) {
-		return totalWithdraw;
+	function getTotalWithdraw(address asset) public onlyOwner returns (uint256) {
+		return totalWithdraws[asset];
 	}
 
 /** Authorized functions */
