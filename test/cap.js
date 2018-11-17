@@ -4,12 +4,8 @@ var CAP = artifacts.require('./Token/CAP.sol');
 const UNLIMITED_ALLOWANCE_IN_BASE_UNITS = new BigNumber(2).pow(256).minus(1)
 
 contract('CAP', function(accounts) {
-	console.log('hello');
 	const owner = accounts[0];
-	const user1 = accounts[1];
-	const user2 = accounts[2];
-	const user3 = accounts[2];
-	
+	const user1 = accounts[1];	
 	// var cap;
 	// beforeEach('setup contract for each test', async function () {
  //      	cap = await CAP.new({from: owner});
@@ -21,7 +17,7 @@ contract('CAP', function(accounts) {
 	      	return instance.decimals();
 	    })
 	    .then(function(decimals) {
-	      	
+	      	assert.equal(decimals, 18, 'decimals is not 18');
 	    });
 	});
 
@@ -165,6 +161,7 @@ contract('CAP', function(accounts) {
 		assert(newOwnerBalance.eq(0));
 		assert(newUser1Balance.eq(ownerBalance), true);
 	});
+
 
 	it('should modify allowance if spender has sufficient allowance less than 2^256 - 1', async () => {
 		const instance = await CAP.new({from: owner});

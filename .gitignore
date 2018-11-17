@@ -58,3 +58,6 @@ fabric.properties
 .idea/workspace.xml
 .vscode/settings.json
 .vscode/tasks.json
+
+# sensitive file
+constants.js
