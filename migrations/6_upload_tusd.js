@@ -1,5 +1,5 @@
 const TUSD = artifacts.require('./Token/TUSD.sol')
-      , constants = require('../../constants/constants')
+      , constants = require('../constants/constants')
       , DEV_ADDRESS = constants.DEV_ADDRESS;
 
 let tusd;
