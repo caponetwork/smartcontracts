@@ -1,12 +1,12 @@
-const CAP = artifacts.require('./Token/CAP.sol')
-      , constants = require('../../constants/constants')
-      , DEV_ADDRESS = constants.DEV_ADDRESS;
+const CAP = artifacts.require('./Token/CAP.sol');
+const constants = require('../constants/constants');
+const DEV_ADDRESS = constants.DEV_ADDRESS;;
 
 let cap;
 let uploadAccount;
 
 const options = {
-  overwrite: true
+  overwrite: false
 };
 
 module.exports = (deployer, network, accounts) => {

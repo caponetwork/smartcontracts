@@ -1,10 +1,7 @@
-const Capoproxy = artifacts.require('./CapoProxy.sol')
-			, constants = require('../constants/constants')
-			, DEV_ADDRESS = constants.DEV_ADDRESS
-			, ExchangeAddress = constants.ExchangeAddress
-			, WETHAddress = constants.WETHAddress;
+const Capoproxy = artifacts.require('./CapoProxy.sol');
+const constants = require('../constants/constants');
+const DEV_ADDRESS = constants.DEV_ADDRESS;
 			
-let proxy;
 let uploadAccount;
 
 const options = {
@@ -17,7 +14,7 @@ module.exports = (deployer, network, accounts) => {
   } else {
     uploadAccount = DEV_ADDRESS;
   }
+
   options.from = uploadAccount;
-  
 	deployer.deploy(Capoproxy, options);
 };
