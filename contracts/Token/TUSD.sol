@@ -1,13 +1,20 @@
-pragma solidity ^0.4.9;
+pragma solidity ^0.4.24;
 
-import "openzeppelin-solidity/contracts/token/ERC20/DetailedERC20.sol";
-import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
-contract TUSD is DetailedERC20, StandardToken {
-    constructor() DetailedERC20("TrueUSD", "TUSD", 18) {    	
-		totalSupply_ = 10**27; // 1 billion tokens, 18 decimal places
-    	balances[msg.sender] = totalSupply_;
-    }
+
+contract TUSD is ERC20, ERC20Detailed {
+
+  uint256 public constant INITIAL_SUPPLY = 10**27;
+
+  /**
+   * @dev Constructor that gives msg.sender all of existing tokens.
+   */
+  constructor() public ERC20Detailed("TrueUSD", "TUSD", 18) {
+    _mint(msg.sender, INITIAL_SUPPLY);
+  }
+
 }
 
 
