@@ -1,21 +1,9 @@
 const TUSD = artifacts.require('./Token/TUSD.sol')
 			, BigNumber = require('bignumber.js')
-			, constants = require('../constants/constants')
+			, constants = require('../../constants/constants')
 			, DEV_ADDRESS = constants.DEV_ADDRESS;
 			
 const	FUNDED_ADDRESSES = [
-	constants.DEV3,
-	constants.DEV4,
-	constants.DEV5,
-	constants.DEV6,
-	constants.DEV7,
-	constants.DEV8,
-	constants.DEV9,
-	constants.DEV10,
-	constants.USER1,
-	constants.USER2,
-	constants.USER3,
-	constants.USER4,
 	"0x06d9aa570bedb6e63d2449b007fe4eab82a4fc77",
 	"0x0ee58484df13963b44ea4fa8cab4bde9f6c82d47",
 	"0xcdcdbd7c7ad2056e34ca4cfee48c094f082a3951",
@@ -26,7 +14,7 @@ let tusd
 , owner;
 
 const options = {
-  overwrite: false
+  overwrite: true
 };
 
 module.exports = (deployer, network, accounts) => {

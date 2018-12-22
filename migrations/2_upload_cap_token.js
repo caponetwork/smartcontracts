@@ -6,7 +6,7 @@ let cap;
 let uploadAccount;
 
 const options = {
-  overwrite: false
+  overwrite: true
 };
 
 module.exports = (deployer, network, accounts) => {

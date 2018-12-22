@@ -4,7 +4,7 @@ const Migrations = artifacts.require("./Migrations.sol")
 
 let uploadAccount;
 const options = {
-  overwrite: false
+  overwrite: true
 };
 
 module.exports = function(deployer, network, accounts) {

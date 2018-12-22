@@ -1,12 +1,12 @@
 const TUSD = artifacts.require('./Token/TUSD.sol')
-      , constants = require('../constants/constants')
+      , constants = require('../../constants/constants')
       , DEV_ADDRESS = constants.DEV_ADDRESS;
 
 let tusd;
 let uploadAccount;
 
 const options = {
-  overwrite: false
+  overwrite: true
 };
 
 module.exports = (deployer, network, accounts) => {
@@ -18,13 +18,5 @@ module.exports = (deployer, network, accounts) => {
   }
 
   options.from = uploadAccount;
-
-  deployer.deploy(TUSD, options)
-  .then(instance => {    
-    tusd = instance;
-    return tusd.balanceOf(uploadAccount);
-  })  
-  .then(balance => {
-    console.log(`${uploadAccount} balance: ${balance}`);
-  });
+  deployer.deploy(TUSD, options);
 };
