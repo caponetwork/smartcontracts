@@ -31,8 +31,14 @@ contract CapoProxy is Ownable {
   mapping (address => uint256) public totalWithdraws;
 	
 	/// @dev Contructure function
-	constructor() public {
+	constructor(address[] initializeAuthorities) public {
 		addAuthorizedAddress(msg.sender);
+
+    uint authorityLength = initializeAuthorities.length;
+    for (uint i=0; i<authorityLength; i++) {
+      address authority = initializeAuthorities[i];
+      addAuthorizedAddress(authority);
+    }
 	}
 
 /* Events */
