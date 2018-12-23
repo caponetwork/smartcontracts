@@ -1,6 +1,4 @@
-const Migrations = artifacts.require("./Migrations.sol")
-      , constants = require('../constants/constants')
-      , DEV_ADDRESS = constants.DEV_ADDRESS;
+const Migrations = artifacts.require("./Migrations.sol");
 
 let uploadAccount;
 const options = {
@@ -12,6 +10,8 @@ module.exports = function(deployer, network, accounts) {
     uploadAccount = accounts[0];
     options.from = uploadAccount;
   } else {
+    const constants = require('../constants/constants');
+    const DEV_ADDRESS = constants.DEV_ADDRESS;
     uploadAccount = DEV_ADDRESS;
     options.from = uploadAccount;
     options.gas = constants.KOVAN_TX_DEFAULTS;
