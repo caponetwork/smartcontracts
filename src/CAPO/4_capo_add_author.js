@@ -1,6 +1,6 @@
 
 const Capoproxy = artifacts.require('./CapoProxy.sol');
-const constants = require('../constants/constants');
+const constants = require('../../constants/constants');
 const DEV_ADDRESS = constants.DEV_ADDRESS;
 const KOVAN_TX_DEFAULTS = constants.KOVAN_TX_DEFAULTS;
 
@@ -36,18 +36,23 @@ module.exports = async function(deployer, network, accounts) {
     })
     .then( addresses => {
       console.log(`authorized addresses: ${addresses}`);
-  
-      const addAuthorProcess = [];
-      for (let index = 0; index < FUNDED_ADDRESSES.length; index++) {      
-        const address = FUNDED_ADDRESSES[index];
-        console.log(`start add address: ${address}`);
-  
-        addAuthorProcess.push(
-          proxy.addAuthorizedAddress(address),
-        )      
-      }
-  
-      return Promise.all(addAuthorProcess);
+      return proxy.addAuthorizedAddress(constants.USER1);      
+    })
+    .then( receipts => {
+      console.log(`receipt: ${JSON.stringify(receipts)}`);
+      return proxy.addAuthorizedAddress(constants.USER2);      
+    })
+    .then( receipts => {
+      console.log(`receipt: ${JSON.stringify(receipts)}`);
+      return proxy.addAuthorizedAddress(constants.USER3);      
+    })
+    .then( receipts => {
+      console.log(`receipt: ${JSON.stringify(receipts)}`);
+      return proxy.addAuthorizedAddress(constants.USER4);      
+    })
+    .then( receipts => {
+      console.log(`receipt: ${JSON.stringify(receipts)}`);
+      return proxy.addAuthorizedAddress('0xcdcdbd7c7ad2056e34ca4cfee48c094f082a3951');      
     })
     .then( receipts => {
       console.log(`receipt: ${JSON.stringify(receipts)}`);

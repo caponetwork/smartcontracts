@@ -9,9 +9,8 @@ const options = {
   overwrite: true
 };
 
-module.exports = (deployer, network, accounts) => {
-  console.log(network);
-  if (network === 'develop') {
+module.exports = (deployer, network, accounts) => {  
+  if (network === 'develop' || network === 'test') {
     uploadAccount = accounts[0];
   } else {
     uploadAccount = DEV_ADDRESS;  

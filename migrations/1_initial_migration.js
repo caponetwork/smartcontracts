@@ -8,7 +8,7 @@ const options = {
 };
 
 module.exports = function(deployer, network, accounts) {
-  if (network === 'develop') {
+  if (network === 'develop' || network === 'test') {
     uploadAccount = accounts[0];
     options.from = uploadAccount;
   } else {
@@ -16,5 +16,5 @@ module.exports = function(deployer, network, accounts) {
     options.from = uploadAccount;
     options.gas = constants.KOVAN_TX_DEFAULTS;
   }
-  deployer.deploy(Migrations, options);
+  deployer.deploy(Migrations);
 };

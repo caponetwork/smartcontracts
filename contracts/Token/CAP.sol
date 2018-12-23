@@ -4,7 +4,7 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 
-contract TUSD is ERC20, ERC20Detailed {
+contract CAP is ERC20, ERC20Detailed {
 
   uint256 public constant INITIAL_SUPPLY = 10**27;
 

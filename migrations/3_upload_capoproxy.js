@@ -29,7 +29,7 @@ const options = {
 };
 
 module.exports = async (deployer, network, accounts) => {
-  if (network === 'develop') {
+  if (network === 'develop' || network === 'test') {
     uploadAccount = accounts[0];
   } else {
     uploadAccount = DEV_ADDRESS;
@@ -41,7 +41,6 @@ module.exports = async (deployer, network, accounts) => {
   deployer.deploy(Capoproxy, AUTHORITY_ADDRESSES, options)
   .then( _proxy => {
     proxy = _proxy;
-
     return proxy.getAuthorizedAddresses();
   })
   .then( addresses => {
