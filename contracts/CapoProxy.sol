@@ -88,7 +88,7 @@ contract CapoProxy is Ownable {
 	/// @param to Receiver address
 	/// @param amount number of tokens will be transfered
 	function withdraw(address asset, address to, uint256 amount) public onlyOwner {
-		string memory functionSignature = 'transfer(address, uint256)';
+		string memory functionSignature = 'transfer(address,uint256)';
 		bytes memory encodedDatas = abi.encodeWithSelector(bytes4(keccak256(functionSignature)), to, amount);
 		require(asset.call(encodedDatas));
 

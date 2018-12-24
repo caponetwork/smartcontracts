@@ -1,5 +1,9 @@
-
+const CAP = artifacts.require('./Token/CAP.sol');
 const CapoProxy = artifacts.require('./CapoProxy.sol');
+const BigNumber = require('bignumber.js');
+const amountToTransfer = new BigNumber(10**18);
+const amountToWithdraw = new BigNumber(10**18);
+const amountToWithdrawToTester1 = new BigNumber(10**18 * 0.5);
 
 contract('CapoProxy', function(accounts) {
   const owner = accounts[0];
@@ -17,45 +21,60 @@ contract('CapoProxy', function(accounts) {
   });
 
 
-  it('Only owner can add authorize address', function() {
-    return CapoProxy.deployed()
+  it('Only owner can add authorize address', async function() {
+    const result = await CapoProxy.deployed()
     .then( proxy => {
       return proxy.addAuthorizedAddress(tester2, {from: tester1});
     })
-    .then( receipt => {
-      assert.isOk(false, 'Transaction must be reverted');
-    })
+    .then( result => {
+			if (result.logs.length > 0) {
+				return true
+			}
+			return false;
+		})
     .catch( err => {
-      assert.isOk(true, 'Transaction must be reverted');
+      return false;
     });
+
+    assert.equal(result, false, 'Transaction should be reverted');
   });
 
 
-  it('Only owner can remove authorize address', function() {
-    return CapoProxy.deployed()
+  it('Only owner can remove authorize address', async function() {
+    const result = await CapoProxy.deployed()
     .then( proxy => {
       return proxy.removeAuthorizedAddress('0x14a15be2d6594b0e681fc136627c46d4ed72b0c3', {from: tester1});
     })
-    .then( receipt => {
-      assert.isOk(false, 'Transaction must be reverted');
-    })
+    .then( result => {
+			if (result.logs.length > 0) {
+				return true
+			}
+			return false;
+		})
     .catch( err => {
-      assert.isOk(true, 'Transaction must be reverted');
+      return false
     });
+
+    assert.equal(result, false, 'Transaction should be reverted');
   });
 
 
-  it('Only owner can remove authorize at index', function() {
-    return CapoProxy.deployed()
+  it('Only owner can remove authorize at index', async function() {
+    const result = await CapoProxy.deployed()
     .then( proxy => {
       return proxy.removeAuthorizedAddressAtIndex(3, {from: tester1});
     })
-    .then( receipt => {
-      assert.isOk(false, 'Transaction must be reverted');
-    })
+    .then( result => {
+			if (result.logs.length > 0) {
+				return true
+			}
+			return false;
+		})
     .catch( err => {
-      assert.isOk(true, 'Transaction must be reverted');
+      return false
     });
+
+    assert.equal(result, false, 'Transaction should be reverted');
   });
 
 
@@ -107,5 +126,72 @@ contract('CapoProxy', function(accounts) {
     .then( authorities => {
       assert.equal(authorities.length, 8, 'Number of authorities is not 8');
     });
+  });
+
+
+  it('Should return true if owner withdraw', function() {    
+    const amountBeforeTransfer = new BigNumber(10**27);
+    let cap, proxy, capaddress, proxyaddress;
+
+    return Promise.all([
+      CAP.deployed(),
+      CapoProxy.deployed(),
+    ])
+		.then( ([_cap, _proxy]) => {
+      cap = _cap;
+      proxy = _proxy;      
+      capaddress = cap.address;
+      proxyaddress = proxy.address;
+      return cap.transfer(proxyaddress, amountToTransfer.toNumber(), {from: owner});
+    })    
+    .then( () => {      
+      // withdraw
+      return proxy.withdraw(capaddress, owner, amountToWithdraw.toNumber(), {from: owner});
+    })
+    .then( () => {
+      // get balance of CapoProxy, Owner after withdraw
+      return Promise.all([
+        cap.balanceOf(owner),
+        cap.balanceOf(proxyaddress)
+      ]);
+    })
+    .then( ([ownerBalance, proxyBalance]) => {
+      assert.equal(ownerBalance.toNumber(), amountBeforeTransfer.toNumber(), `owner's balance is not equal to expected balance`);
+      assert.equal(proxyBalance.toNumber(), 0, `proxy's balance is not equal to expected balance`);
+    })
+  });
+
+  it('Should withdraw correct balance', function() {
+    const amountBeforeTransfer = new BigNumber(10**27);
+    let cap, proxy, capaddress, proxyaddress;
+
+    return Promise.all([
+      CAP.deployed(),
+      CapoProxy.deployed(),
+    ])
+		.then( ([_cap, _proxy]) => {
+      cap = _cap;
+      proxy = _proxy;      
+      capaddress = cap.address;
+      proxyaddress = proxy.address;
+
+      // transfer 1E18 cap to proxy
+      return cap.transfer(proxyaddress, amountToTransfer.toNumber(), {from: owner});
+    })
+    .then( () => {      
+      // withdraw a half to tester1
+      return proxy.withdraw(capaddress, tester1, amountToWithdrawToTester1.toNumber(), {from: owner});
+    })
+    .then( () => {
+      // get balance of CapoProxy, Owner after withdraw
+      return Promise.all([
+        cap.balanceOf(tester1),
+        cap.balanceOf(proxyaddress)
+      ]);
+    })
+    .then( ([tester1Balance, proxyBalance]) => {
+      assert.equal(tester1Balance.toNumber(), amountToWithdrawToTester1.toNumber(), `tester1's balance is not equal to expected balance`);
+      assert.equal(proxyBalance.toNumber(), amountToWithdrawToTester1.toNumber(), `proxy's balance is not equal to expected balance`);
+    })
   });
 });
