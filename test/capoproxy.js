@@ -78,6 +78,48 @@ contract('CapoProxy', function(accounts) {
   });
 
 
+  it('Only owner can withdraw', async function() {
+    const cap = await CAP.deployed();
+    const capaddress = cap.address;
+    const result = await CapoProxy.deployed()
+    .then( proxy => {
+      return proxy.withdraw(capaddress, tester1, amountToWithdrawToTester1.toNumber(), {from: tester1});
+    })
+    .then( result => {
+			if (result.logs.length > 0) {
+				return true
+			}
+			return false;
+		})
+    .catch( err => {
+      return false
+    });
+
+    assert.equal(result, false, 'Transaction should be reverted');
+  });
+
+
+  it('Only owner can view total of withdraw', async function() {
+    const cap = await CAP.deployed();
+    const capaddress = cap.address;
+    const result = await CapoProxy.deployed()
+    .then( proxy => {
+      return proxy.getTotalWithdraw(capaddress, {from: tester1});
+    })
+    .then( result => {
+			if (result.logs.length > 0) {
+				return true
+			}
+			return false;
+		})
+    .catch( err => {
+      return false
+    });
+
+    assert.equal(result, false, 'Transaction should be reverted');
+  });
+
+
   it('Should return true if owner add authorized address', function() {
     let proxy;
     return CapoProxy.deployed()
@@ -162,7 +204,6 @@ contract('CapoProxy', function(accounts) {
   });
 
   it('Should withdraw correct balance', function() {
-    const amountBeforeTransfer = new BigNumber(10**27);
     let cap, proxy, capaddress, proxyaddress;
 
     return Promise.all([
@@ -193,5 +234,19 @@ contract('CapoProxy', function(accounts) {
       assert.equal(tester1Balance.toNumber(), amountToWithdrawToTester1.toNumber(), `tester1's balance is not equal to expected balance`);
       assert.equal(proxyBalance.toNumber(), amountToWithdrawToTester1.toNumber(), `proxy's balance is not equal to expected balance`);
     })
+  });
+
+
+  it('Should return correct total of withdraw', async function() {
+    const cap = await CAP.deployed();
+    const capaddress = cap.address;
+    const _totalWithdraw = amountToWithdraw.plus(amountToWithdrawToTester1);
+    CapoProxy.deployed()
+    .then( proxy => {
+      return proxy.getTotalWithdraw(capaddress, {from: owner});
+    })
+    .then( totalwithdraw => {
+			assert.equal(totalwithdraw.toNumber(), _totalWithdraw.toNumber(), `totalwithdraw is not equal to expected balance`);
+		});
   });
 });
