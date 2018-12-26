@@ -22,38 +22,9 @@ contract CapoProxy is Ownable {
 		bytes takerAssetData;           // Encoded data that can be decoded by a specified proxy contract when transferring takerAsset. The last byte references the id of this proxy.
   }
 
-	/// @dev Address is authorized or not
-	mapping (address => bool) public authorized;
-
-	/// @dev list authorized addresses
-	address[] public authorities;
-
   mapping (address => uint256) public totalWithdraws;
-	
-	/// @dev Contructure function
-	constructor(address[] initializeAuthorities) public {
-		addAuthorizedAddress(msg.sender);
-
-    uint authorityLength = initializeAuthorities.length;
-    for (uint i=0; i<authorityLength; i++) {
-      address authority = initializeAuthorities[i];
-      addAuthorizedAddress(authority);
-    }
-	}
 
 /* Events */
-
-	// Event logged when a new address is authorized.
-	event AuthorizedAddressAdded(
-			address indexed target,
-			address indexed caller
-	);
-
-	// Event logged when a currently authorized address is unauthorized.
-	event AuthorizedAddressRemoved(
-		address indexed target,
-		address indexed caller
-	);
 
 	// Event logged when onwer withdraw token
 	event WithDraw(
@@ -61,26 +32,6 @@ contract CapoProxy is Ownable {
 		address indexed to,
 		uint256 amount
 	);
-
-/** Modifier */
-
-	/// @dev Only authorized addresses can invoke functions with this modifier.
-	modifier onlyAuthorized {
-		require(
-			authorized[msg.sender],
-			"SENDER_NOT_AUTHORIZED"
-		);
-		_;
-	}
-
-	/// @dev Only order's maker addresses can invoke functions with this modifier.
-	modifier onlyMaker(address maker) {
-		require(
-			maker == msg.sender, 
-			"SENDER_IS_NOT_MARKER"
-		);
-		_;
-	}
 
 /** Owner functions */
 
@@ -103,72 +54,6 @@ contract CapoProxy is Ownable {
 	/// @return total amount
 	function getTotalWithdraw(address asset) public onlyOwner returns (uint256) {
 		return totalWithdraws[asset];
-	}
-
-/** Authorized functions */
-	
-	/// @dev Authorizes an address.
-	/// @param target Address to authorize.
-	function addAuthorizedAddress(address target) public onlyOwner {
-		require(
-				!authorized[target],
-				"TARGET_ALREADY_AUTHORIZED"
-		);
-
-		authorized[target] = true;
-		authorities.push(target);
-		emit AuthorizedAddressAdded(target, msg.sender);
-	}
-
-	/// @dev Removes authorizion of an address.
-	/// @param target Address to remove authorization from.
-	function removeAuthorizedAddress(address target) external onlyOwner {
-		require(
-				authorized[target],
-				"TARGET_NOT_AUTHORIZED"
-		);
-
-		delete authorized[target];
-		for (uint256 i = 0; i < authorities.length; i++) {
-				if (authorities[i] == target) {
-						authorities[i] = authorities[authorities.length - 1];
-						authorities.length -= 1;
-						break;
-				}
-		}
-		emit AuthorizedAddressRemoved(target, msg.sender);
-	}
-
-	/// @dev Removes authorizion of an address.
-	/// @param target Address to remove authorization from.
-	/// @param index Index of target in authorities array.
-	function removeAuthorizedAddressAtIndex(
-		address target, 
-		uint256 index
-	) external onlyOwner {
-		require(
-				authorized[target],
-				"TARGET_NOT_AUTHORIZED"
-		);
-		require(
-				index < authorities.length,
-				"INDEX_OUT_OF_BOUNDS"
-		);
-		require(
-				authorities[index] == target,
-				"AUTHORIZED_ADDRESS_MISMATCH"
-		);
-
-		delete authorized[target];
-		authorities[index] = authorities[authorities.length - 1];
-		authorities.length -= 1;
-		emit AuthorizedAddressRemoved(target, msg.sender);
-	}
-
-	/// @dev Gets all authorized addresses.
-	/// @return Array of authorized addresses.
-	function getAuthorizedAddresses() external view returns (address[] memory) {
-		return authorities;
 	}
 
 /** 0x function */
@@ -211,8 +96,7 @@ contract CapoProxy is Ownable {
 		bytes[2] rightOrderDatas, 
 		bytes memory leftSignature,
 		bytes memory rightSignature
-  ) public onlyAuthorized
-	{
+  ) public {
 		Order memory leftOrder = Order(
 			leftOrderAddresses[0],
 			leftOrderAddresses[1],
