@@ -4,5 +4,7 @@
 # CAPO Smart Contracts
 # Compile sm:
 ```
-truffle compile
+npm install
+
+node_modules/.bin/truffle compile
 ```

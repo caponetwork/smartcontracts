@@ -11,7 +11,7 @@ contract CAP is ERC20, ERC20Detailed {
   /**
    * @dev Constructor that gives msg.sender all of existing tokens.
    */
-  constructor() public ERC20Detailed("CAPO Dex Token", "CAP", 18) {
+  constructor() public ERC20Detailed("Capo Network", "CAP", 18) {
     _mint(msg.sender, INITIAL_SUPPLY);
   }
 
