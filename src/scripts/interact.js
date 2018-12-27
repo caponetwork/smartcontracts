@@ -69,14 +69,8 @@ async function main() {
   
   if (action === "1") {
     // get total withdraw
-    const data = await proxy.getTotalWithdraw(erc20address).data;
-    const transaction = {
-      data: data,
-      from: wallet.address
-    }    
-    const totalwithdraw = await provider.call(transaction);
-   
-    console.log(`Total withdraw of address ${erc20address} is: `, totalwithdraw);
+    const totalwithdraw = await proxy.getTotalWithdraw(erc20address);       
+    console.log(`Total withdraw of address ${erc20address} is: `, totalwithdraw.toString());
 
   } else {
     // withdraw

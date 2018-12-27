@@ -52,7 +52,7 @@ contract CapoProxy is Ownable {
 
 	/// @dev Get total amount of weth was withdrew
 	/// @return total amount
-	function getTotalWithdraw(address asset) public onlyOwner returns (uint256) {
+	function getTotalWithdraw(address asset) view returns (uint256) {
 		return totalWithdraws[asset];
 	}
 

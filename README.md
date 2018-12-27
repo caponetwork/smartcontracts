@@ -2,3 +2,7 @@
 
 
 # CAPO Smart Contracts
+# Compile sm:
+```
+truffle compile
+```
