@@ -9,7 +9,7 @@
   "dependencies": {
     "@0xproject/subproviders": "^0.10.6",
     "bignumber.js": "^7.2.1",
-    "ethers": "^3.0.26",
+    "ethers": "4.0.20",
     "openzeppelin-solidity": "^2.0.0",
     "truffle": "^4.1.14",
     "web3": "^1.0.0-beta.34",
@@ -19,7 +19,9 @@
   "scripts": {
     "test": "./node_modules/.bin/truffle test",
     "migrate": "./node_modules/.bin/truffle migrate --reset",
-    "build": "./node_modules/.bin/truffle compile"
+    "build": "./node_modules/.bin/truffle compile",
+    "deploy": "node ./src/scripts/deploy.js",
+    "interact": "node ./src/scripts/interact.js"
   },
   "repository": {
     "type": "git",
