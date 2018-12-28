@@ -103,7 +103,7 @@ async function main() {
       console.log('Gas Limit: ', _gasLimit);
     }
 
-    console.log(overrides);
+    
     console.log('Sending ');
     const tx = await proxy.withdraw(erc20address, receiveraddress, utils.parseUnits(amount, 18).toString(), overrides);
     
