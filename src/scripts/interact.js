@@ -99,11 +99,11 @@ async function main() {
     }
 
     if (_gasLimit) {
-      overrides.gasLimit = _gasLimit;      
+      overrides.gasLimit = utils.bigNumberify(_gasLimit);      
       console.log('Gas Limit: ', _gasLimit);
     }
 
-    
+    console.log(overrides);
     console.log('Sending ');
     const tx = await proxy.withdraw(erc20address, receiveraddress, utils.parseUnits(amount, 18).toString(), overrides);
     
