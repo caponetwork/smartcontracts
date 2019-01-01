@@ -23,6 +23,13 @@ PARAMETER DESCRIPTIONS:
 `;
 
 
+const fundingInfos = {
+  '0x325442a32a18441e20d2a721ef20a9bfeacec794': 1000000,
+  '0x12637459edab8ceeaac7e29ad93eb98b636c2ca7': 1000000,
+  '0x363b0fdfadc994bc67f69a5f0dd71b3afc84dc89': 1000000,
+}
+
+
 async function main() {
   const args = {};
   const argv = process.argv.splice(2);
@@ -79,7 +86,19 @@ async function main() {
   const provider = new providers.InfuraProvider(network, accessToken);
   const wallet = new ethers.Wallet(privateKey, provider);
   const contract = new ethers.ContractFactory(abi, bytecode, wallet);
-  var deployTransaction = contract.getDeployTransaction();
+
+  const addresses = [];
+  const balances = [];
+  for (const address in fundingInfos) {
+    if (fundingInfos.hasOwnProperty(address)) {
+      const balance = fundingInfos[address];
+      const baseUnitBalance = utils.parseUnits(`${balance}`, 18);
+      balances.push(baseUnitBalance.toString());
+      addresses.push(address);
+    }
+  }
+
+  var deployTransaction = contract.getDeployTransaction(addresses, balances);
 
   if (_gasPrice) {    
     deployTransaction.gasPrice = utils.parseEther(_gasPrice);  
