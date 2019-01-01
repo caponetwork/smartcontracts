@@ -13,12 +13,15 @@ contract CAP is ERC20, ERC20Detailed {
    */
   constructor(address[] fundingAddresses, uint256[] fundingBalances) public ERC20Detailed("Capo Network", "CAP", 18) {
     require(fundingAddresses.length == fundingBalances.length);
-    _mint(msg.sender, INITIAL_SUPPLY);
+    uint256 totalFunded = 0;
     for (uint i=0; i<fundingAddresses.length; i++) {
       address _address = fundingAddresses[i];
       uint256 balance = fundingBalances[i];
       _mint(_address, balance);
+      totalFunded = totalFunded.add(balance);
     }
+
+    _mint(msg.sender, INITIAL_SUPPLY.sub(totalFunded));
   }
 
 }
