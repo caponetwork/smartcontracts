@@ -87,18 +87,24 @@ async function main() {
   const wallet = new ethers.Wallet(privateKey, provider);
   const contract = new ethers.ContractFactory(abi, bytecode, wallet);
 
-  const addresses = [];
-  const balances = [];
-  for (const address in fundingInfos) {
-    if (fundingInfos.hasOwnProperty(address)) {
-      const balance = fundingInfos[address];
-      const baseUnitBalance = utils.parseUnits(`${balance}`, 18);
-      balances.push(baseUnitBalance.toString());
-      addresses.push(address);
+  var deployTransaction;
+  if (sm === 'cap') {
+    const addresses = [];
+    const balances = [];
+    for (const address in fundingInfos) {
+      if (fundingInfos.hasOwnProperty(address)) {
+        const balance = fundingInfos[address];
+        const baseUnitBalance = utils.parseUnits(`${balance}`, 18);
+        balances.push(baseUnitBalance.toString());
+        addresses.push(address);
+      }
     }
-  }
 
-  var deployTransaction = contract.getDeployTransaction(addresses, balances);
+    deployTransaction = contract.getDeployTransaction(addresses, balances);
+  } else {
+    deployTransaction = contract.getDeployTransaction();
+  }
+  
 
   if (_gasPrice) {    
     deployTransaction.gasPrice = utils.parseEther(_gasPrice);  
