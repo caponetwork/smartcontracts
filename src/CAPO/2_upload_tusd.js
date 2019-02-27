@@ -6,17 +6,17 @@ let tusd;
 let uploadAccount;
 
 const options = {
-  overwrite: true
+    overwrite: true
 };
 
 module.exports = (deployer, network, accounts) => {
-  console.log(network);
-  if (network === 'develop') {
-    uploadAccount = accounts[0];
-  } else {
-    uploadAccount = DEV_ADDRESS;
-  }
+    console.log(network);
+    if (network === 'develop') {
+        uploadAccount = accounts[0];
+    } else {
+        uploadAccount = DEV_ADDRESS;
+    }
 
-  options.from = uploadAccount;
-  deployer.deploy(TUSD, options);
+    options.from = uploadAccount;
+    deployer.deploy(TUSD, options);
 };

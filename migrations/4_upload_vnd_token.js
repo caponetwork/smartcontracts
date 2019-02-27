@@ -1,15 +1,16 @@
-const Capoproxy = artifacts.require('./CapoProxy.sol');
+const VND = artifacts.require('./Token/VND.sol');
 
+let vnd;
 let uploadAccount;
-let proxy;
 
 const options = {
     overwrite: true
 };
 
-module.exports = async (deployer, network, accounts) => {
+module.exports = (deployer, network, accounts) => {
     if (network === 'develop' || network === 'test') {
         uploadAccount = accounts[0];
+        
     } else {
         const constants = require('../constants/constants');
         const DEV_ADDRESS = constants.DEV_ADDRESS;
@@ -17,5 +18,13 @@ module.exports = async (deployer, network, accounts) => {
     }
 
     options.from = uploadAccount;
-    deployer.deploy(Capoproxy, options);
+
+    deployer.deploy(VND, options)
+    .then(instance => {
+        vnd = instance;
+        return vnd.balanceOf(uploadAccount);
+    })
+    .then(balance => {
+        console.log(`${uploadAccount} balance: ${balance}`);
+    });
 };
