@@ -10,6 +10,10 @@ const proxyJSON = require('../../build/contracts/CapoProxy.json');
 const proxyAbi = proxyJSON.abi;
 const proxyBytecode = proxyJSON.bytecode;
 
+const vndJSON = require('../../build/contracts/VND.json');
+const vndAbi = vndJSON.abi;
+const vndBytecode = vndJSON.bytecode;
+
 const description = `
 PARAMETER DESCRIPTIONS:
 
@@ -19,7 +23,7 @@ PARAMETER DESCRIPTIONS:
 - confirmation: Waiting for transaction mined at
 - gasprice: gas price in ethers unit
 - gaslimit:
-- sm: cap or proxy, default is cap
+- sm: cap or vnd or proxy, default is cap
 `;
 
 
@@ -70,6 +74,10 @@ async function main() {
         abi = capAbi;
         bytecode = capBytecode;
         name = 'CAP';
+    } else if (sm === 'vnd') {
+        abi = vndAbi;
+        bytecode = vndBytecode;
+        name = 'VND';
     } else {
         abi = proxyAbi;
         bytecode = proxyBytecode;
@@ -101,6 +109,8 @@ async function main() {
         }
 
         deployTransaction = contract.getDeployTransaction(addresses, balances);
+    } else if (sm === 'vnd') {
+        deployTransaction = contract.getDeployTransaction();
     } else {
         deployTransaction = contract.getDeployTransaction();
     }
