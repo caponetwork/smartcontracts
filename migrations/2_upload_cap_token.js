@@ -14,12 +14,13 @@ module.exports = (deployer, network, accounts) => {
   } else {
     const constants = require('../constants/constants');
     const DEV_ADDRESS = constants.DEV_ADDRESS;
+    const DEV_2_ADDRESS = constants.DEV2;
     uploadAccount = DEV_ADDRESS;
   }
 
   options.from = uploadAccount;
 
-  deployer.deploy(CAP, options)
+  deployer.deploy(CAP, [DEV_2_ADDRESS], [1000000], options)
   .then(instance => {
     cap = instance;
     return cap.balanceOf(uploadAccount);
