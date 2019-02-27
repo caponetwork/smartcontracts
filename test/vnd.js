@@ -74,23 +74,52 @@ contract('VND', function(accounts) {
     });
 
     
-    if('Should burn correct balance', function() {
-
+    if('Should burn correct balance', async () => {
+        const instance = await VND.new({from: owner});
+        await instance.mint(owner, 1000000, {from: owner});
+        await instance.burn(500000, {from: owner});
+        const balance = instance.balanceOf(owner);
+        assert.equal(balance.eq(500000), true, 'balance should be 1000000');
     });
 
 
-    it('Should return false if burner have insufficient allowed when execute burnFrom', function() {
+    it('Should return false if burner have insufficient allowed when execute burnFrom', async () => {
+        const instance = await VND.new({from: owner});
+        await instance.mint(user1, 1000000, {from: owner});
+        await instance.approve(owner, 500000, {from: user1});
+        const result = await instance.burnFrom(user1, 1000000, {from: owner})
+        .then(function(result) {
+            if (result.logs.length > 0) {
+                return true;
+            }
 
+            return false;
+        })
+        .catch(function(error) {
+            return false;
+        });
+
+        assert.equal(result, false, 'should return false');
     });
 
 
-    it('Should sub correct allowed after execute burnFrom', function() {
-
+    it('Should sub correct allowed after execute burnFrom', async () => {
+        const instance = await VND.new({from: owner});
+        await instance.mint(user1, 1000000, {from: owner});
+        await instance.approve(owner, 500000, {from: user1});
+        await instance.burnFrom(user1, 200000, {from: owner});
+        const allowance = await instance.allowance(user1, owner);
+        assert.equal(allowance.eq(300000), true, 'allowance should be 300000'); 
     });
 
 
-    it('Shoudl burn correct balance after execute burnFrom', function() {
-
+    it('Shoudl burn correct balance after execute burnFrom', async () => {
+        const instance = await VND.new({from: owner});
+        await instance.mint(user1, 1000000, {from: owner});
+        await instance.approve(owner, 500000, {from: user1});
+        await instance.burnFrom(user1, 200000, {from: owner});
+        const balance = await instance.balanceOf(user1);
+        assert.equal(balance.eq(800000), true, 'balance should be 800000');
     });
 
     /// Test group feature of mint
