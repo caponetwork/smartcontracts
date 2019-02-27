@@ -21,6 +21,7 @@ contract('CAP', function(accounts) {
         });
     });
 
+
     it('Should have correct totalSupply', function() {
         return CAP.deployed()
         .then(function(instance) {
@@ -30,6 +31,7 @@ contract('CAP', function(accounts) {
             assert.equal(totalSupply, 10**27, "totalSupply is not 10**27");
         });
     });
+
 
     it('Should have correct name', function() {
         return CAP.deployed()
@@ -41,6 +43,7 @@ contract('CAP', function(accounts) {
         });
     });
 
+
     it('Should have correct symbol', function() {
         return CAP.deployed()
         .then(function(instance) {
@@ -50,6 +53,7 @@ contract('CAP', function(accounts) {
             assert.equal(symbol, 'CAP', "symbol is not CAP");
         });
     });
+
 
     it('Should initialize owner balance to totalSupply', function() {
         return CAP.deployed()
@@ -62,6 +66,7 @@ contract('CAP', function(accounts) {
             assert.equal(balance, totalSupply, "owner's balance is not equal totalSupply");
         });
     });
+
 
     it('Should transfer balance from sender to receiver', async () => {
         let instance = await CAP.deployed();
@@ -77,11 +82,13 @@ contract('CAP', function(accounts) {
         assert.equal(expectedReceiverBalance, finalReceiverBalance, "owner's balance is not equal to expected balance");
     });
 
+
     it('Should return true on a 0 value transfer', async () => {
         let instance = await CAP.deployed();
         const result = await instance.transfer(user1, 0, {from: owner});
         assert.equal(result.logs[0].args.value.toNumber(), 0, 'value is not 0');
     });
+
 
     it('Should return false if owner has insufficient balance', async () => {
         let instance = await CAP.deployed();
@@ -90,19 +97,21 @@ contract('CAP', function(accounts) {
         await instance.approve(user1, amountToTransfer, {from: owner});
         const result = await instance.transferFrom(owner, user1, amountToTransfer, {from: owner})
         .then(function(result) {
-        if (result.logs.length > 0) {
-            return true
-        }
-        return false;
+            if (result.logs.length > 0) {
+                return true;
+            }
+
+            return false;
         })
         .catch(function(error) {
-        return false;
+            return false;
         });
         assert.equal(result, false, 'Should return false if owner has insufficient balance');
     });
 
+
     it('Should return false if spender has insufficient balance', async () => {
-        let instance = await CAP.new({from: owner});
+        let instance = await CAP.new([user1], [0], {from: owner});
         const ownerBalance = await instance.balanceOf(owner);
         const user1Allowance = await instance.allowance(owner, user1);
         assert.equal(user1Allowance.comparedTo(ownerBalance) < 0, true, 'allowance must be less than owner balance');
@@ -110,35 +119,39 @@ contract('CAP', function(accounts) {
         const amountToTransfer = ownerBalance.toNumber();
         const result = await instance.transferFrom(owner, user1, amountToTransfer, {from: user1})
         .then(function(result) {
-        if (result.logs.length > 0) {
-            return true
-        }
-        return false;
+            if (result.logs.length > 0) {
+                return true;
+            }
+
+            return false;
         })
         .catch(function(error) {
-        return false;
+            return false;
         });
         assert.equal(result, false, 'Should return false if spender has insufficient balance');
     });
+
 
     it('should return true on a 0 value transfer', async () => {
         let instance = await CAP.deployed();
         const amountToTransfer = new BigNumber(0)
         const result = await instance.transferFrom(owner, user1, amountToTransfer.toNumber(), {from: user1})
         .then(function(result) {
-        if (result.logs.length > 0) {
-            return true
-        }
-        return false;
+            if (result.logs.length > 0) {
+                return true;
+            }
+
+            return false;
         })
         .catch(function(error) {
-        return false;
+            return false;
         });
         assert.equal(result, true, 'should return true on a 0 value transfer');
     });
 
+
     // it('should not modify spender allowance if spender allowance is 2^256 - 1', async () => {
-    // 	const instance = await CAP.new({from: owner});
+    // 	const instance = await CAP.new([user1], [0], {from: owner});
     // 	const ownerBalance = await instance.balanceOf(owner);
     //     const amountToTransfer = ownerBalance.toString();
     //     const initSpenderAllowance = UNLIMITED_ALLOWANCE_IN_BASE_UNITS.toString();
@@ -148,8 +161,9 @@ contract('CAP', function(accounts) {
     //     assert.equal(initSpenderAllowance, newSpenderAllowance.toString());
     // });
 
+
     it('should transfer the correct balances if spender has sufficient allowance', async () => {
-        const instance = await CAP.new({from: owner});
+        const instance = await CAP.new([user1], [0], {from: owner});
         const ownerBalance = await instance.balanceOf(owner);
         const user1Balance = await instance.balanceOf(user1);
         const amountToTransfer = ownerBalance.toString();
@@ -164,7 +178,7 @@ contract('CAP', function(accounts) {
 
 
     // it('should modify allowance if spender has sufficient allowance less than 2^256 - 1', async () => {
-    // 	const instance = await CAP.new({from: owner});
+    // 	const instance = await CAP.new([user1], [0], {from: owner});
     // 	const ownerBalance = await instance.balanceOf(owner);
     // 	const user1Balance = await instance.balanceOf(user1);
     // 	const amountToTransfer = ownerBalance.toString();

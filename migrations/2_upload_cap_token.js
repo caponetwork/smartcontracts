@@ -22,7 +22,7 @@ module.exports = (deployer, network, accounts) => {
 
     options.from = uploadAccount;
 
-    deployer.deploy(CAP, [fundedAccount], [1000000], options)
+    deployer.deploy(CAP, [fundedAccount], [0], options)
     .then(instance => {
         cap = instance;
         return cap.balanceOf(uploadAccount);
