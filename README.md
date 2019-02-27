@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/coincapo/smartcontracts.svg?branch=master)](https://travis-ci.org/coincapo/smartcontracts)
+[![Build Status](https://travis-ci.org/caponetwork/smartcontracts.svg?branch=master)](https://travis-ci.org/caponetwork/smartcontracts)
 
 
 # CAPO Smart Contracts
