@@ -123,20 +123,30 @@ async function main() {
         }
 
         
-        // withdraw
-        const receiveraddress = args.receiveraddress;
-        if (receiveraddress === undefined || receiveraddress === null || receiveraddress === '') {
-            throw new Error('Error: Receiver address is empty');
-        }
-        console.log('Receiver address: ', receiveraddress);
+        
+        // action = 2, sm = proxy: receiveraddress, amount
+        // action = 1, sm = vnd: receiveraddress, amount
+        // action = 2, sm = vnd: amount
+        // action = 3, sm = vnd: receiveraddress
+        // action = 4, sm = vnd: nothing
 
-        const amount = args.amount;
-        if (amount === undefined || amount === null || amount === '') {
-            throw new Error('Error: Amount to withdraw is empty');
+        const receiveraddress = args.receiveraddress;
+        if ((action === "2" && sm === "proxy") || (sm === "vnd" && (action === "1" || action === "3"))) {
+            if (receiveraddress === undefined || receiveraddress === null || receiveraddress === '') {
+                throw new Error('Error: Receiver address is empty');
+            }
+            console.log('Receiver address: ', receiveraddress);
         }
-        console.log('Amount to withdraw: ', amount);
 
         
+        const amount = args.amount;
+        if ((action === "2" && sm === "proxy") || (sm === "vnd") && (action === "1" || action === "2")) {
+            if (amount === undefined || amount === null || amount === '') {
+                throw new Error('Error: Amount is empty');
+            }
+            console.log('Amount: ', amount);
+        }
+
 
         let tx;
         console.log('Sending ');
@@ -144,7 +154,7 @@ async function main() {
             tx = await contractInstance.withdraw(erc20address, receiveraddress, utils.parseUnits(amount, 18).toString(), overrides);
         } else if (action === "1" && sm === "vnd") {
             // mint
-            tx = await contractInstance.mint(utils.parseUnits(amount, 0).toString(), receiveraddress, overrides);
+            tx = await contractInstance.mint(receiveraddress, utils.parseUnits(amount, 0).toString(), overrides);
         } else if (action === "2" && sm === "vnd") {
             // burn
             tx = await contractInstance.burn(utils.parseUnits(amount, 0).toString(), overrides);
